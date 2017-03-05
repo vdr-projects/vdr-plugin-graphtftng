@@ -1,0 +1,24 @@
+
+graphtft-fe ist das X-Sever-Frontend des graphTFT Plugin, die Bedinung des VDR ist mit 
+entsprechender Theme mittels Maus/Touch und Tastatur möglich.
+
+Voraussetzungen
+---------------
+
+Pakete:
+
+imlib2, imlib2-dev, libjpeg-dev
+xorg-x11-devel
+
+Installation
+------------
+
+make -s clean all
+
+Start / Optionen
+----------------
+
+Eine Liste der Optionen wird mit
+./graphtft-fe --help
+angezeigt
+

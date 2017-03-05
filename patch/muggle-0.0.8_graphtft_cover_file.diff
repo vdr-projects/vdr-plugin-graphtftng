@@ -1,0 +1,103 @@
+diff -Nru muggle-0.0.8-orig/vdr_player.c muggle-0.0.8/vdr_player.c
+--- muggle-0.0.8-orig/vdr_player.c	2004-11-28 18:07:59.403969080 +0100
++++ muggle-0.0.8/vdr_player.c	2004-11-28 18:09:47.448543808 +0100
+@@ -194,6 +194,10 @@
+   void Play();
+   void Forward();
+   void Backward();
++  char * GetCover(const char *fullname);
++  bool CopyCover(const char *coverName);
++  void RemoveOldCover(void);
++
+ 
+   void Goto(int Index, bool Still=false);
+   void SkipSeconds(int secs);
+@@ -326,6 +330,63 @@
+     }
+ }
+ 
++char *mgPCMPlayer::GetCover(const char *fullname)
++{
++	static char imageFile[1024];
++	char *result = NULL;
++	FILE *fp;
++
++	printf( "cov: checking %s for specific cover\n", fullname);
++	strcpy (imageFile, fullname);
++
++	strcpy (strrchr (imageFile, '.'), ".jpg");
++	if ((fp=fopen(imageFile, "rb")))
++	{
++		// found specific cover
++		printf( "cov: specific cover file %s found\n", basename(imageFile));
++		fclose (fp);
++		result = imageFile;
++	}
++	else
++	{
++		strcpy (strrchr (imageFile, '/'), "/Cover.jpg");
++		if ((fp = fopen (imageFile, "rb")))
++		{
++			fclose (fp);
++			result = imageFile;
++			printf( "cov: cover file Cover.jpg found\n");
++		} else {
++			printf( "cov: no cover found\n" );
++		}
++	}
++	return result;
++}
++
++bool mgPCMPlayer::CopyCover(const char *coverName)
++{
++	char commandString[1024];
++	bool result=false;
++	int ret = false;
++
++	sprintf((char*) commandString, "echo %s > /tmp/graphTFT.cover", coverName );
++	ret=system((const char*)commandString);
++
++	if (ret) result=true;
++	return result;
++}
++
++void mgPCMPlayer::RemoveOldCover(void)
++{
++	FILE *fp;
++
++	if ((fp=fopen("/tmp/graphTFT.cover", "rb")))
++	{
++		fclose (fp);
++		system( "rm /tmp/graphTFT.cover");
++		printf( "cov: old cover removed\n" );
++	}
++}
++
+ void mgPCMPlayer::Action(void)
+ {
+   MGLOG( "mgPCMPlayer::Action" );
+@@ -335,6 +396,7 @@
+   cResample resample[2];
+   unsigned int nsamples[2];
+   const mad_fixed_t *data[2];
++  const char *coverName=0;
+   cScale scale;
+   cLevel level;
+   cNormalize norm;
+@@ -388,6 +450,16 @@
+ 		    {
+ 		      std::string filename = m_playing->getSourceFile();
+ 		      // mgDebug( 1, "mgPCMPlayer::Action: music file is %s", filename.c_str() );
++				// First remove the old cover, when exist
++				RemoveOldCover();
++				coverName=GetCover(filename.c_str());
++				if(coverName) {
++					// if a cover exist, copy it to the /tmp directory
++					if(CopyCover(coverName)){
++						printf( "cov: found and copy cover %s to /tmp/graphTFT.cover\n",coverName );
++					}
++				}
++
+         
+ 		      if( ( m_decoder = mgDecoders::findDecoder( m_playing ) ) && m_decoder->start() )
+ 		      {

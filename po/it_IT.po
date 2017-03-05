@@ -1,0 +1,196 @@
+# VDR plugin language source file.
+# Copyright (C) 2007 Klaus Schmidinger <kls@cadsoft.de>
+# This file is distributed under the same license as the VDR package.
+# Alberto Carraro <bertocar@tin.it>, 2001
+# Antonio Ospite <ospite@studenti.unina.it>, 2003
+# Sean Carlos <seanc@libero.it>, 2005
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: VDR 1.5.7\n"
+"Report-Msgid-Bugs-To: <vdr@jwendel.de>\n"
+"POT-Creation-Date: 2015-12-22 11:18+0100\n"
+"PO-Revision-Date: 2009-02-08 20:23+0100\n"
+"Last-Translator: Diego Pierotto <vdr-italian@tiscali.it>\n"
+"Language-Team:  <vdr@linuxtv.org>\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Italian\n"
+"X-Poedit-Country: ITALY\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+msgid "Can't save snapshot, missing event information"
+msgstr "Impossibile salvare schermata, info evento mancante"
+
+msgid "Snapshot saved"
+msgstr "Schermata salvata"
+
+msgid "Error saving snapshot"
+msgstr "Errore salvataggio schermata"
+
+msgid "Reload themes"
+msgstr "Ricarica temi"
+
+msgid "Refresh Display"
+msgstr "Aggiorna Display"
+
+msgid "Normal Display"
+msgstr "Display normale"
+
+msgid "Snapshot"
+msgstr "Schermata"
+
+msgid "--- end of playlist ---"
+msgstr "--- fine lista esec. ---"
+
+msgid "GraphTFT"
+msgstr "GraphTFT"
+
+msgid "Theme"
+msgstr "Tema"
+
+msgid "Hide Mainmenu Entry"
+msgstr "Nascondi voce menu principale"
+
+msgid "VDR use iso charset"
+msgstr ""
+
+msgid "Spectrum Analyzer (music)"
+msgstr ""
+
+msgid "Dump Image"
+msgstr "Estrai immagine"
+
+msgid "Dump image to '/tmp/graphtftng.png'"
+msgstr ""
+
+msgid "Dump every [sec]"
+msgstr ""
+
+msgid "Snapshot width"
+msgstr "Larghezza schermata"
+
+msgid "Snapshot height"
+msgstr "Altezza schermata"
+
+msgid "Snapshot JPEG Quality"
+msgstr ""
+
+msgid "Snapshot path"
+msgstr "Percorso schermata"
+
+msgid "FB/X Device"
+msgstr ""
+
+msgid "Width"
+msgstr "Larghezza"
+
+msgid "Height"
+msgstr "Altezza"
+
+msgid "FB Device"
+msgstr ""
+
+msgid "Flip OSD"
+msgstr "Vibrazione OSD"
+
+msgid "X Offset"
+msgstr "Limite X"
+
+msgid "Y Offset"
+msgstr "Limite Y"
+
+msgid "Border to Width"
+msgstr "Larghezza bordo"
+
+msgid "Border to Height"
+msgstr "Altezza bordo"
+
+msgid "TCP Connection"
+msgstr "Connessione TCP"
+
+msgid "JPEG Quality"
+msgstr ""
+
+msgid "touch Device"
+msgstr "tocca dispositivo"
+
+msgid "Device"
+msgstr "Dispositivo"
+
+msgid "Log"
+msgstr ""
+
+msgid "Log Device"
+msgstr "Log dispositivo"
+
+msgid "Log Level"
+msgstr ""
+
+msgid "Test"
+msgstr "Prova"
+
+msgid "Stop"
+msgstr "Ferma"
+
+msgid "Calibrate"
+msgstr "Calibra"
+
+msgid "Unknown title"
+msgstr "Titolo sconosciuto"
+
+msgid "No EPG data available."
+msgstr ""
+
+msgid "Title"
+msgstr ""
+
+msgid "Artist"
+msgstr ""
+
+#~ msgid "Debug"
+#~ msgstr "Debug"
+
+#~ msgid "Debug Level"
+#~ msgstr "Livello debug"
+
+#~ msgid "Dump Refresh"
+#~ msgstr "Estrai aggiornamento"
+
+#~ msgid "Dump image width"
+#~ msgstr "Estrai larghezza immagine"
+
+#~ msgid "Dump image height"
+#~ msgstr "Estrai altezza immagine"
+
+#~ msgid "Snapshot Jpeg Quality"
+#~ msgstr "Qualità schermata Jpeg"
+
+#~ msgid "Jpeg Quality"
+#~ msgstr "Qualità Jpeg"
+
+#~ msgid "Convert Iso to UTF-8"
+#~ msgstr "Converti ISO in UTF-8"
+
+#~ msgid "Spectrum Analyzer"
+#~ msgstr "Analizzatore di spettro"
+
+#~ msgid "Dump image to file"
+#~ msgstr "Estrai immagine in un file"
+
+#~ msgid "graphTFT: The syntax version of the theme file don't match!"
+#~ msgstr "graphTFT: la versione della sintassi del file del tema non corrisponde!"
+
+#~ msgid "DVB Device"
+#~ msgstr "Scheda DVB"
+
+#~ msgid "Use StillPicture"
+#~ msgstr "Utilizza adatta immagine"
+
+#~ msgid "Refresh"
+#~ msgstr "Aggiorna"
+
+#~ msgid "DVB/FB Device"
+#~ msgstr "Scheda DVB/FB"

@@ -1,0 +1,119 @@
+--- ../mp3-0.9.15pre14.save//player-mp3.c	2006-11-04 15:44:33.000000000 +0100
++++ player-mp3.c	2007-07-01 16:53:27.000000000 +0200
+@@ -1583,6 +1583,7 @@
+   cNormalize norm;
+   bool haslevel=false;
+   const unsigned char *p=0;
++  const char *coverName=0;
+   int pc=0, readindex=0;
+   bool imageValid=true;
+   int imageCheck=0;
+@@ -1751,6 +1752,16 @@
+                 if(si->HasInfo())
+                   total=SecondsToFrames(si->Total);
+                 }
++              // First remove the old cover, when exist
++              RemoveOldCover();
++				  coverName=GetCover(playing->FullPath());
++              if(coverName) {
++                // if a cover exist, copy it to the /tmp directory
++                if(CopyCover(coverName)){
++                   d(isyslog("mp3: found and copy cover %s to /tmp/graphTFT.cover",coverName));
++                }
++              }
++              
+               d(printf("mp3: isStream=%d levelgood=%d haslevel=%d\n",isStream,levelgood,haslevel))
+               output->Init();
+               level.Init();
+@@ -2027,3 +2038,79 @@
+   Speed=-1;
+   return true;
+ }
++
++char *cMP3Player::GetCover(const char* fullname)
++{
++   static char imageFile[1024];
++   FILE* fp;
++
++   // track cover file ?
++
++   strcpy(imageFile, fullname); 
++   strcpy(strrchr(imageFile, '.'), ".jpg");
++
++   d(isyslog("cov: Checking '%s' for track cover file", imageFile));
++
++   if ((fp = fopen(imageFile, "rb")))
++   {
++      fclose(fp);
++      d(isyslog("cov: Track specific cover file '%s' found", basename(imageFile)));
++
++      return imageFile;
++   }
++
++   // directory cover file ?
++
++   strcpy(strrchr(imageFile, '/'), "/Cover.jpg");
++   
++   d(isyslog("cov: Checking '%s' for directory cover file ", imageFile));
++   
++   if ((fp = fopen(imageFile, "rb")))
++   {
++      fclose (fp);
++      d(isyslog("cov: Cover file Cover.jpg found"));
++
++      return imageFile;
++   } 
++
++   strcpy(strrchr(imageFile, '/'), "/cover.jpg");
++   
++   d(isyslog("cov: Checking '%s' for directory cover file ", imageFile));
++   
++   if ((fp = fopen(imageFile, "rb")))
++   {
++      fclose (fp);
++      d(isyslog("cov: Cover file cover.jpg found"));
++
++      return imageFile;
++   } 
++
++   d(isyslog("cov: No cover found :("));
++
++   return 0;
++}
++
++bool cMP3Player::CopyCover(const char* coverName)
++{
++  char commandString[1024];
++  bool result = false;
++  int ret = false;
++  
++  sprintf((char*)commandString, "echo %s > /tmp/graphTFT.cover", coverName);
++  ret = system((const char*)commandString);
++  
++  if (ret) result = true;
++  
++  return result;
++}
++
++void cMP3Player::RemoveOldCover(void)
++{
++	FILE* fp;
++
++   if ((fp = fopen("/tmp/graphTFT.cover", "rb")))
++   {
++		fclose (fp);
++		system("rm /tmp/graphTFT.cover");
++	}
++}
+--- ../mp3-0.9.15pre14.save//player-mp3.h	2006-11-04 15:44:33.000000000 +0100
++++ player-mp3.h	2007-07-01 16:05:48.000000000 +0200
+@@ -177,6 +177,9 @@
+   virtual bool GetReplayMode(bool &Play, bool &Forward, int &Speed);
+   bool Active(void) { return active; }
+   bool IsStream(void) { return isStream; }
++  char *GetCover(const char *maskFilename);
++  bool CopyCover(const char *coverName);
++  void RemoveOldCover(void);
+   };
+ 
+ #endif //___DVB_MP3_H

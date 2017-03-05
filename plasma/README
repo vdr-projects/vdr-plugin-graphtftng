@@ -1,0 +1,12 @@
+
+# Install like all plasmoids
+
+mkdir build
+cd build
+cmake ../ -DCMAKE_INSTALL_PREFIX=`kde4-config --prefix`
+make -s
+sudo make -s install
+
+# After an update restart plasma 
+kquitapp plasma && plasma
+

@@ -1,0 +1,78 @@
+--- ../plain.0/mailbox-0.5.0/AxMailBoxServiceTypes.h	2006-03-03 15:52:16.000000000 +0100
++++ AxMailBoxServiceTypes.h	2007-11-17 15:43:24.000000000 +0100
+@@ -31,6 +31,7 @@
+ //     Service-Names (ID)
+ //=============================================================================
+ #define MailBox_HasNewMail_v1_0_NAME "MailBox-HasNewMail-1.0"
++#define MailBox_GetTotalUnseen_v1_0_NAME "MailBox-GetTotalUnseen-1.0"
+ 
+ //=============================================================================
+ //     service MailBox-HasNewMail-1.0
+--- ../plain.0/mailbox-0.5.0/AxMailChecker.cpp	2006-06-09 19:16:00.000000000 +0200
++++ AxMailChecker.cpp	2007-11-17 15:40:47.000000000 +0100
+@@ -209,6 +209,7 @@
+     unsigned long aSumUnread = 0;
+     unsigned long aSumSIF    = 0;
+     bool          fAbort     = false;
++    int unseen = 0;
+ 
+     //----- iterate over Mail-Accounts -----
+     for (Mail::MailBoxList::const_iterator anIter  = myPlugin->getMailBoxCltn().begin();
+@@ -230,6 +231,7 @@
+               anAppendix = anAppendix + std::string("/");
+             } // if
+             anAppendix = anAppendix + std::string(itoa(aMB->getCurrentFolder()->getCountUnseen()));
++            unseen += aMB->getCurrentFolder()->getCountUnseen();
+           } // if
+ 
+           if ((aMB->getSetup().getBGCheckMode() & Mail::BG_SIF_MASK) == Mail::BG_SIF_ON)
+@@ -262,6 +264,7 @@
+     } // if
+ 
+     myPlugin->setMainMenuAppendix(aSumSIF != 0, anAppendix);
++    myPlugin->setTotalUnseen(unseen);
+ 
+     fFirst     = false;
+     aTimeOutMS = myPluginSettings.BGCheckDelay * 60 * 1000;
+--- ../plain.0/mailbox-0.5.0/AxPluginMailBox.cpp	2007-10-21 10:43:27.000000000 +0200
++++ AxPluginMailBox.cpp	2007-11-17 16:30:27.000000000 +0100
+@@ -108,6 +108,7 @@
+                , myInitialMailBox(0)
+                , myHasNewMail    (false)
+                , myMainMenuEntryAppendix("")
++               , totalUnseen(0)
+ {
+ #if HAVE_AXLIB
+   Ax::Tools::Trace::setLogFunc(syslog_with_tid);
+@@ -426,6 +427,11 @@
+       wsdebug(("- AxPluginMailBox::Service() Id: '%s' supported", Id));
+     } // if
+   }
++  else if (strcmp(Id, MailBox_GetTotalUnseen_v1_0_NAME) == 0)
++  {
++    if (Data != 0)
++       *((int*)Data) = totalUnseen;
++  }
+   else
+   {
+     fHandled = false;
+--- ../plain.0/mailbox-0.5.0/AxPluginMailBox.h	2006-05-01 18:49:21.000000000 +0200
++++ AxPluginMailBox.h	2007-11-17 15:41:51.000000000 +0100
+@@ -497,6 +497,8 @@
+      */
+     void setMainMenuAppendix(bool fHasNewMail = false, const std::string &theMenuText = std::string(""));
+ 
++    void setTotalUnseen(int i) { totalUnseen = i; }
++      
+     //-------------------------------------------------------------------------
+     //     copyMainMenuEntry()
+     //-------------------------------------------------------------------------
+@@ -552,7 +554,7 @@
+     bool        myHasNewMail;
+     std::string myMainMenuEntryAppendix;
+     cMutex      myMainMenuEntryAppendixMutex;
+-
++    int totalUnseen;
+ }; // class AxPluginMailBox
+ 
+ #endif // __AxPluginMaiBox_H__

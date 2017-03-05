@@ -1,0 +1,10 @@
+*~
+*.a
+*.o
+*.log
+.dependencies
+po/*.mo
+po/*.pot
+graphtft-fe/graphtft-fe
+libvdr-graphtftng.so
+imlibrenderer/imlibtest

@@ -1,0 +1,101 @@
+<ui version="4.0" >
+ <class>config</class>
+ <widget class="QWidget" name="config" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>480</width>
+    <height>250</height>
+   </rect>
+  </property>
+  <property name="minimumSize" >
+   <size>
+    <width>0</width>
+    <height>250</height>
+   </size>
+  </property>
+  <property name="styleSheet" >
+   <string notr="true" />
+  </property>
+  <layout class="QVBoxLayout" >
+   <item>
+    <widget class="QGroupBox" name="groupBox_2" >
+     <property name="title" >
+      <string>VDR</string>
+     </property>
+     <property name="flat" >
+      <bool>true</bool>
+     </property>
+     <layout class="QGridLayout" name="gridLayout" >
+      <item row="0" column="0" >
+       <widget class="QLabel" name="label_2" >
+        <property name="text" >
+         <string>Host</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1" >
+       <widget class="QLineEdit" name="lineEditHost" >
+        <property name="text" >
+         <string>localhost</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" >
+       <widget class="QLabel" name="label" >
+        <property name="text" >
+         <string>Port</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1" >
+       <widget class="QLineEdit" name="lineEditPort" >
+        <property name="inputMask" >
+         <string>990000; </string>
+        </property>
+        <property name="text" >
+         <string>2039</string>
+        </property>
+        <property name="maxLength" >
+         <number>6</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox" >
+     <property name="title" >
+      <string>Appearance</string>
+     </property>
+     <property name="flat" >
+      <bool>true</bool>
+     </property>
+     <layout class="QVBoxLayout" >
+      <item>
+       <layout class="QVBoxLayout" >
+        <item>
+         <widget class="QCheckBox" name="smoothScaling" >
+          <property name="toolTip" >
+           <string>Use smooth scaling when resizing pictures. Usually pictures look better this way, but it takes more time to load them.</string>
+          </property>
+          <property name="text" >
+           <string>Smooth scaling</string>
+          </property>
+          <property name="checked" >
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

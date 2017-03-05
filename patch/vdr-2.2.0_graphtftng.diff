@@ -1,0 +1,157 @@
+--- vdr-2.2.0.plain/menu.c	2015-02-10 13:37:06.000000000 +0100
++++ vdr-2.2.0.gtft/menu.c	2016-02-01 10:35:04.592774218 +0100
+@@ -1302,6 +1302,7 @@
+ {
+   cOsdMenu::Display();
+   DisplayMenu()->SetEvent(event);
++  cStatus::MsgOsdSetEvent(event);
+   if (event->Description())
+      cStatus::MsgOsdTextItem(event->Description());
+ }
+@@ -1432,6 +1433,7 @@
+   static void SetCurrentChannel(int ChannelNr) { currentChannel = ChannelNr; }
+   static const cEvent *ScheduleEvent(void);
+   virtual eOSState ProcessKey(eKeys Key);
++  virtual void Display(void);
+   };
+ 
+ int cMenuWhatsOn::currentChannel = 0;
+@@ -1461,6 +1463,18 @@
+   SetHelpKeys();
+ }
+ 
++void cMenuWhatsOn::Display(void)
++{
++   cOsdMenu::Display();
++   
++   if (Count() > 0) {
++      int ni = 0;
++      for (cOsdItem *item = First(); item; item = Next(item)) {
++         cStatus::MsgOsdEventItem(((cMenuScheduleItem*)item)->event, item->Text(), ni++, Count());
++      }
++   }
++}
++
+ bool cMenuWhatsOn::Update(void)
+ {
+   bool result = false;
+@@ -1614,6 +1628,7 @@
+   cMenuSchedule(void);
+   virtual ~cMenuSchedule();
+   virtual eOSState ProcessKey(eKeys Key);
++  virtual void Display(void);
+   };
+ 
+ cMenuSchedule::cMenuSchedule(void)
+@@ -1640,6 +1655,18 @@
+   cMenuWhatsOn::ScheduleEvent(); // makes sure any posted data is cleared
+ }
+ 
++void cMenuSchedule::Display(void)
++{
++   cOsdMenu::Display();
++   
++   if (Count() > 0) {
++      int ni = 0;
++      for (cOsdItem *item = First(); item; item = Next(item)) {
++         cStatus::MsgOsdEventItem(((cMenuScheduleItem*)item)->event, item->Text(), ni++, Count());
++      }
++   }
++}
++
+ void cMenuSchedule::PrepareScheduleAllThis(const cEvent *Event, const cChannel *Channel)
+ {
+   Clear();
+@@ -2561,6 +2588,7 @@
+      }
+   cOsdMenu::Display();
+   DisplayMenu()->SetRecording(recording);
++  cStatus::MsgOsdSetRecording(recording);
+   if (recording->Info()->Description())
+      cStatus::MsgOsdTextItem(recording->Info()->Description());
+ }
+--- vdr-2.2.0.plain/osdbase.c	2015-01-15 11:11:11.000000000 +0100
++++ vdr-2.2.0.gtft/osdbase.c	2015-10-16 14:48:22.000000000 +0200
+@@ -106,6 +106,7 @@
+   free(status);
+   displayMenu->Clear();
+   cStatus::MsgOsdClear();
++  cStatus::MsgOsdMenuDestroy();
+   if (!--displayMenuCount)
+      DELETENULL(displayMenu);
+ }
+@@ -234,6 +235,7 @@
+   displayMenuItems = displayMenu->MaxItems();
+   displayMenu->SetTabs(cols[0], cols[1], cols[2], cols[3], cols[4]);//XXX
+   displayMenu->SetTitle(title);
++  cStatus::MsgOsdMenuDisplay(menuCategory);
+   cStatus::MsgOsdTitle(title);
+   DisplayHelp(true);
+   int count = Count();
+--- vdr-2.2.0.plain/status.c	2014-01-25 11:47:39.000000000 +0100
++++ vdr-2.2.0.gtft/status.c	2015-10-16 14:46:28.000000000 +0200
+@@ -130,3 +130,32 @@
+   for (cStatus *sm = statusMonitors.First(); sm; sm = statusMonitors.Next(sm))
+       sm->OsdProgramme(PresentTime, PresentTitle, PresentSubtitle, FollowingTime, FollowingTitle, FollowingSubtitle);
+ }
++
++void cStatus::MsgOsdSetEvent(const cEvent* event)
++{
++  for (cStatus *sm = statusMonitors.First(); sm; sm = statusMonitors.Next(sm))
++      sm->OsdSetEvent(event);
++}
++
++void cStatus::MsgOsdSetRecording(const cRecording* recording)
++{
++  for (cStatus *sm = statusMonitors.First(); sm; sm = statusMonitors.Next(sm))
++      sm->OsdSetRecording(recording);
++}
++
++void cStatus::MsgOsdMenuDisplay(eMenuCategory menuCategory)
++{
++  for (cStatus *sm = statusMonitors.First(); sm; sm = statusMonitors.Next(sm))
++      sm->OsdMenuDisplay(menuCategory);
++}
++
++void cStatus::MsgOsdMenuDestroy()
++{
++  for (cStatus *sm = statusMonitors.First(); sm; sm = statusMonitors.Next(sm))
++      sm->OsdMenuDestroy();
++}
++void cStatus::MsgOsdEventItem(const cEvent* Event, const char *Text, int Index, int Count)
++{
++  for (cStatus *sm = statusMonitors.First(); sm; sm = statusMonitors.Next(sm))
++     sm->OsdEventItem(Event, Text, Index, Count);
++}
+--- vdr-2.2.0.plain/status.h	2014-01-25 11:47:39.000000000 +0100
++++ vdr-2.2.0.gtft/status.h	2015-10-16 14:46:28.000000000 +0200
+@@ -84,6 +84,17 @@
+                // The OSD displays the single line Text with the current channel information.
+   virtual void OsdProgramme(time_t PresentTime, const char *PresentTitle, const char *PresentSubtitle, time_t FollowingTime, const char *FollowingTitle, const char *FollowingSubtitle) {}
+                // The OSD displays the given programme information.
++  virtual void OsdSetRecording(const cRecording* recording) {}
++               // The OSD displays the recording information.
++  virtual void OsdSetEvent(const cEvent* event) {}
++               // The OSD displays the event information.
++  virtual void OsdMenuDisplay(eMenuCategory menuCategory) {}
++               // report menu creation
++  virtual void OsdMenuDestroy() {}
++               // report menu destruvtion
++  virtual void OsdEventItem(const cEvent* Event, const char *Text, int Index, int Count) {}
++               // The OSD displays the given single line Event as menu item at Index.
++
+ public:
+   cStatus(void);
+   virtual ~cStatus();
+@@ -106,6 +117,11 @@
+   static void MsgOsdTextItem(const char *Text,  bool Scroll = false);
+   static void MsgOsdChannel(const char *Text);
+   static void MsgOsdProgramme(time_t PresentTime, const char *PresentTitle, const char *PresentSubtitle, time_t FollowingTime, const char *FollowingTitle, const char *FollowingSubtitle);
++  static void MsgOsdSetEvent(const cEvent* event);
++  static void MsgOsdSetRecording(const cRecording* recording);
++  static void MsgOsdMenuDisplay(eMenuCategory menuCategory);
++  static void MsgOsdMenuDestroy();
++  static void MsgOsdEventItem(const cEvent* Event, const char *Text, int Index, int Count);
+   };
+ 
+ #endif //__STATUS_H

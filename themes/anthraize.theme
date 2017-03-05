@@ -1,0 +1,591 @@
+//***************************************************************************
+// Suchpfade fuer die EPG Images
+//***************************************************************************
+   var varEPGimagesPath_1 = "/var/cache/vdr/epgimages/";
+   var varEPGimagesPath_2 = "/media/epgimages/";
+   var varEPGimagesPath_3 = "/video0/epgimages/";
+   var varEPGimagesPath_4 = "/ramdisk/epgimages/";
+   var varImagesPath_1 = "/video0/images/";
+
+//***************************************************************************
+[Theme]
+//***************************************************************************
+
+   Theme name=anthraize-800x480,dir=anthraize,
+   fontPath=./fonts:../../fonts,width=800,height=480,
+   themeVersion=0.0.2,
+   syntaxVersion=0.4.1;
+
+//   startImage=backgrounds/start.png,
+//   endImage=backgrounds/end.png;
+
+   #define MP3_PLUGIN
+// #define MUSIC_PLUGIN
+// #define MUSIC_PLUGIN_MORONE_STYLE
+
+// start.png,end.png = (c) yaVDR
+// based on the fabulous work "AVP" (c) data - THANK YOU!!
+
+//***************************************************************************
+[OSD-Messages]
+//***************************************************************************
+
+   Message x=0,y=180,bg_x=5,bg_y=120,bg_width=790,bg_height=280,bg_color=20/20/20,align=center,
+       width=800,height=280,font=graphTFT,size=48,color=250/250/250,delay=5;
+
+//***************************************************************************
+[Volume] 
+//***************************************************************************
+
+   Defaults font=graphTFT;
+// ohne bg-dummy.png blendet volume.png nicht aus!!
+//   Background path=backgrounds/bg-dummy.png,permanent=no,delay=3,
+   Volumebar x=197,y=230,width=1,height=1,switch=yes,bg_x=198,bg_y=239,bg_width=1,bg_height=1,alpha=1,permanent=no,delay=3;
+   VolumeMuteSymbol x=350,y=305,bg_x=5,bg_y=120,bg_width=790,bg_height=280,bg_color=20/20/20,pathON=symbols/mute_on.png,pathOFF=symbols/mute_off.png,permanent=no,delay=3;
+   Volumebar x=197,y=230,width=403,height=60,switch=yes,color=51/51/51,bg_color=51/51/51,permanent=no,delay=3;
+   Volumebar x=191,y=180,width=403,bg_x=191,bg_y=180,bg_width=416,bg_height=118,path2=backgrounds/volume.png,permanent=no,delay=3;
+   Volumebar text=percent,bg_x=5,bg_y=120,bg_width=790,bg_height=280,bg_color=20/20/20,size=26,color=0/0/0,x=344,y=208,height=40,permanent=no,delay=3;
+
+
+//***************************************************************************
+[NormalClock]
+//***************************************************************************
+
+   Defaults font=graphTFT,size=40,color=200/200/200,bg_color=0/0/0/0;
+   Background path=backgrounds/bg-tv.png;
+
+// Datumzeile
+   Text text={time/%A\, %d. %b.%G},x=20,y=7,width=650,height=65,size=36,bg_alpha=0,align=left;
+
+// Senderlogo Logo oben rechts
+   Image x=635,y=90,width=160,height=96,fit=yes,aspect_ratio=yes,path=logos/{presentChannelName}.png;
+
+// Email-Symbol
+   Image condition={hasNewMail} != 0,x=702,y=136,path=symbols/mail.png;
+
+// Aufnahmesymbol
+   Image condition={actRecordingCount} > 0,
+   x=656,y=5,path=symbols/recOn-clock.png,permanent=no,delay=5;
+
+// grosse Uhr
+   Text text={time/%H:%M},x=10,y=70,width=600,align=left,height=200,size=150;
+
+// Aktuelle Sendung
+   Text text={presentStartTime/%H:%M},x=15,y=280,width=150,height=70,color=255/255/255,size=38;
+   Text text={presentTitle},x=180,y=280,height=70,width=610,size=38,color=255/255/255,lines=1;
+
+// Naechste Sendung
+   Text text={followingStartTime/%H:%M},x=15,y=340,width=150,height=70,size=38;
+   Text text={followingTitle},x=180,y=340,height=70,width=610,size=38,color=180/180/180,lines=1;
+
+// Timebar
+//   Timebar x=20,y=425,width=760,height=30,path=symbols/progress.png,bg_alpha=150;
+   Timebar x=20,y=425,width=760,height=30,path=symbols/progress_yellow.png,bg_alpha=150;
+
+// Includes
+   Include=Volume;
+   Include=OSD-Messages;
+
+//***************************************************************************
+[ReplayCommon]
+//***************************************************************************
+
+   Include=Volume;
+   Include=OSD-Messages; 
+
+// play
+   Image condition={replayForward} = 1 & {replaySpeed}= -1 & {replayPlay} = 1,x=10,y=7,width=60,height=60,path=symbols/play.png,delay=1;
+// pause
+   Image condition={replayForward} = 1 & {replaySpeed} = -1 & {replayPlay} <1,x=10,y=7,width=60,height=60,path=symbols/pause.png,delay=1;
+// Fast Rewind
+   Image condition={replayForward} = 0 & {replaySpeed} > 0 & {replayPlay} = 1,x=10,y=7,width=60,height=60,path=symbols/frew.png,delay=1;
+// Fast Forward
+   Image condition={replayForward} = 1 & {replaySpeed} > 0 & {replayPlay} = 1,x=10,y=7,width=60,height=60,path=symbols/ffwd.png,delay=1;
+// Slow Rewind
+   Image condition={replayForward} = 0 & {replaySpeed} > 0 & {replayPlay} < 1,x=10,y=7,width=60,height=60,path=symbols/srew.png,delay=1;
+// Slow Forward
+   Image condition={replayForward} = 1 & {replaySpeed} > 0 & {replayPlay} < 1,x=10,y=7,width=60,height=60,path=symbols/sfwd.png,delay=1;
+
+
+//***************************************************************************
+[ReplayNormal]
+//***************************************************************************
+
+   Include=ReplayCommon;
+
+   Defaults font=graphTFT,size=40,color=200/200/200,bg_color=0/0/0/0;
+   Background path=backgrounds/bg-tv.png;
+
+// Datum/Uhr oben rechts
+   Text text={time/%A %d.%m} - {time/%H:%M},x=100,y=7,size=40,align=right,width=680,align=right,height=60;
+
+// Ausgabe recording info
+   Text text={replayTitle},x=10,y=85,size=40,width=720,height=70,lines=1,color=250/250/250,dots=1;
+   Text text={replaySubtitle},x=10,y=150,size=28,width=770,height=40,color=250/250/250;
+   Text text={replayDescription},x=10,y=195,width=770,height=200,size=20,color=200/200/200,dots=1;
+
+
+// Laufzeiten links und rechts oben
+   Text text={replayCurrent/%k:%M:%S},x=10,y=420,width=170,size=30,height=40,align=left,delay=1;
+   Text text={replayTotal/%k:%M:%S},x=610,y=420,width=170,size=30,height=40,align=right,delay=1;
+
+// Progressbar
+// Progressbar total={replayTotal/%s},value={replayCurrent/%s},x=200,y=430,path=symbols/progress.png,width=380,height=30,bg_alpha=200; 
+   Progressbar total={replayTotal/%s},value={replayCurrent/%s},x=200,y=430,path=symbols/progress_yellow.png,width=380,height=30,bg_alpha=200; 
+
+//***************************************************************************
+[TV_Radio_Common]
+//***************************************************************************
+
+   Background path=backgrounds/bg-tv.png;
+   Defaults font=graphTFT,size=24,color=200/200/200,bg_color=0/0/0/0;
+
+// Timebar
+// Timebar x=10,y=85,width=630,height=25,path=symbols/progress.png,bg_alpha=150;
+   Timebar x=10,y=85,width=630,height=25,path=symbols/progress_yellow.png,bg_alpha=150;
+
+// Senderlogo Logo oben rechts
+   Image x=635,y=15,width=160,height=96,fit=yes,aspect_ratio=yes,path=logos/{presentChannelName}.png;
+
+
+// Textausgabe des Kanalnamens im Kopfbereich
+   Text x=20,y=7,text={presentChannelName},size=40,align=left,width=620,height=65;
+
+// Aktuelle Sendung
+   Text text={presentStartTime/%H:%M},x=10,y=115,width=160,height=70,size=40,color=255/255/255;
+   Text text={presentTitle},x=175,y=115,bg_x=175,bg_y=115,bg_width=650,bg_height=80,width=590,height=80,size=40,dots=yes,color=255/255/255;
+   Text text={presentSubtitle},x=175,y=180,bg_x=175,bg_y=180,bg_width=650,bg_height=77,width=600,height=77,lines=2,size=24,dots=yes,color=255/255/255;
+
+// Kommende Sendung
+   Text text={followingStartTime/%H:%M},x=10,y=260,width=160,height=60,size=40;
+   Text text={followingTitle},x=175,y=260,bg_x=175,bg_y=260,bg_width=650,bg_height=80,width=590,height=80,size=40,dots=yes;
+   Text text={followingSubtitle},x=175,y=325,bg_x=175,bg_y=325,bg_width=650,bg_height=77,width=600,height=77,lines=2,size=24,dots=yes;
+
+// Iconleiste
+   Image x=0,y=400,width=800,height=78,path=backgrounds/button-bg-grey.png;
+
+   Image condition={channelHasVtx} = 0,x=30,y=400,width=80,height=78,path=symbols/vtxOff.png,fit=yes;
+   Image condition={channelHasVtx},x=30,y=400,width=80,height=78,path=symbols/vtxOn.png,fit=yes;
+   Image condition={channelHasDD} = 0, x=127,y=400,width=110,height=78,path=symbols/ddOff.png,fit=yes;
+   Image condition={channelHasDD},x=127,y=400,width=110,height=78,path=symbols/ddOn.png,fit=yes;
+   Image condition={channelIsEncrypted} = 0,x=390,y=400,width=110,height=78,path=symbols/cryptOff.png,fit=yes;
+   Image condition={channelIsEncrypted} = 1,x=390,y=400,width=110,height=78,path=symbols/cryptOn.png,fit=yes;
+   Image condition={actRecordingCount} = 0, x=530,y=400,width=110,height=78,path=symbols/recOff.png,fit=yes;
+   Image condition={actRecordingCount} > 0,x=530,y=400,width=110,height=78,path=symbols/recOn.png,fit=yes;
+   Image condition={channelHasMultilang} = 0, x=250,y=400,width=130,height=78,path=symbols/ch2Off.png,fit=yes;
+   Image condition={channelHasMultilang},x=250,y=400,width=130,height=78,path=symbols/ch2On.png,fit=yes;
+
+// Datum/Uhr unten rechts
+   Text text={time/%H:%M},x=630,y=409,size=40,color=255/255/255,align=left,width=160,height=60,bg_alpha=2;
+
+// Includes
+   Include=Volume;
+   Include=OSD-Messages;
+
+//***************************************************************************
+[NormalTV]
+//***************************************************************************
+
+   Include=TV_Radio_Common;
+
+
+//***************************************************************************
+[NormalRadio]
+//***************************************************************************
+
+   Include=TV_Radio_Common;
+
+//***************************************************************************
+[NormalNonLiveTv]
+//***************************************************************************
+
+   Defaults font=graphTFT,size=40,color=200/200/200,bg_color=0/0/0/0;
+   Background path=backgrounds/bg-tv.png;
+
+// Titel
+   Text condition={actRecordingCount} > 0, text={actRecordingCount} Timer(s),x=40,y=7,width=650,height=60,size=40,bg_alpha=2,color=200/20/20,align=left;
+   Text condition={actRecordingCount} = 0, text=Timer,x=40,y=7,width=650,height=60,size=40,bg_alpha=0,align=left;
+// Aufnahmesymbol
+   Image condition={actRecordingCount} > 0,
+   x=656,y=5,path=symbols/recOn-clock.png,permanent=no,delay=5;
+
+// TextList text={actRecordings},x=40,y=90,height=310,width=760,size=20;
+   TextList condition={actRecordingCount} > 0, text={actRunningRecordings},x=20,y=85,height=330,width=760,size=26,color=200/20/20,bg_alpha=2;
+   TextList condition={actRecordingCount} = 0, text={actPendingRecordings},x=20,y=85,height=330,width=760,size=26,bg_alpha=2;
+
+// Datum/Uhr unten rechts
+   Text text={time/%A %d.%m} - {time/%H:%M},x=40,y=409,size=40,color=255/255/255,align=left,width=800,height=60,bg_alpha=2;
+
+// Includes
+   Include=Volume;
+   Include=OSD-Messages;
+
+//***************************************************************************
+[MenuCommon]
+//***************************************************************************
+
+   Defaults font=graphTFT,size=24,color=200/200/200,bg_alpha=0;
+   Background path=backgrounds/bg-menu.png;
+   Text text={menuTitle},x=20,y=10,width=760,size=36,height=75,lines=1,align=left,dots=yes;
+
+// colorbuttons
+   MenuButtonBackgroundRed x=8,y=430,width=192,height=43,pathON=menu/button-red.png,on_click=Red;
+   MenuButtonRed x=14,y=438,width=179,size=22,height=43,color=200/200/200,alpha=255,align=center;
+   MenuButtonBackgroundGreen x=205,y=430,width=192,height=43,pathON=menu/button-green.png,on_click=Green;
+   MenuButtonGreen x=212,y=438,width=179,size=22,height=43,color=200/200/200,alpha=255,align=center;
+   MenuButtonBackgroundYellow x=401,y=430,width=192,height=43,pathON=menu/button-yellow.png,on_click=Yellow;
+   MenuButtonYellow x=408,y=438,width=179,size=22,height=43,color=200/200/200,alpha=255,align=center;
+   MenuButtonBackgroundBlue x=597,y=430,width=192,height=43,pathON=menu/button-blue.png,on_click=Blue;
+   MenuButtonBlue x=604,y=438,width=179,size=22,height=43,color=200/200/200/255,align=center;
+
+// special OSD message
+   Message x=0,y=438,bg_x=0,bg_y=430,width=800,align=center,height=55,size=22,color=200/200/200,path=backgrounds/bg-message-yellow.png,delay=5,bg_alpha=255;
+
+// parting line
+   PartingLine x=0,align=center,width=800,size=26,color=250/250/250,path=menu/parting-line.png;
+
+//***************************************************************************
+[Menu]
+//***************************************************************************
+
+   Include=MenuCommon;
+   Defaults menu_x=0,menu_y=90,menu_height=330,font=graphTFT,size=24,color=200/200/200,bg_alpha=0;
+
+   ColumnSelected number=5,width=1,focus=menu/menuCurrent.png,spacing=20;
+   Column number=5,width=1,spacing=20;
+
+   MenuSelected x=10,y=90,width=760,height=330,size=30,color=255/255/255;
+   Menu x=10,y=90,width=760,height=330,color=200/200/200;
+
+//***************************************************************************
+[MenuSetupPage]
+//***************************************************************************
+
+   Include=MenuCommon;
+   Defaults menu_y=90,menu_height=330,font=graphTFT,size=24,color=200/200/200,bg_alpha=0;
+ 
+   ColumnSelected number=1,width=600,size=30,color=250/250/250,focus=menu/menuCurrent.png,scroll=off;
+   Column number=1,width=600;  
+
+   ColumnSelected number=2,size=30,color=250/250/250,scroll=off;
+   Column number=2;
+
+
+//***************************************************************************
+[MenuSetupPlugins]
+//***************************************************************************
+
+   Include=MenuCommon;
+   Defaults menu_y=90,menu_height=330,font=graphTFT,size=24,color=200/200/200,bg_alpha=0;
+ 
+   ColumnSelected number=1,width=760,size=30,color=250/250/250,focus=menu/menuCurrent.png,dots=yes;
+   Column number=1,width=760;  
+
+   ColumnSelected number=2,size=30,color=250/250/250,scroll=off;
+   Column number=2;
+
+// parting line
+// PartingLine x=0,align=center,width=800,size=26,color=250/250/250,path=menu/parting-line.png,path2=menu/parting-line-empty.png;
+
+
+//***************************************************************************
+[MenuTimers]
+//***************************************************************************
+
+   Include=MenuCommon;
+   Defaults menu_y=90,menu_height=330,font=graphTFT,size=24,color=200/200/200,bg_alpha=0;
+
+   ColumnSelected number=1,width=35,size=30,color=255/255/255,focus=menu/menuCurrent.png,spacing=5;
+   Column number=1,width=30,spacing=5;
+   ColumnSelected number=2,width=1,size=30,size=30,color=255/255/255;
+   Column number=2,width=70;
+   ColumnSelected number=3,width=165,size=30,color=255/255/255;
+   Column number=3,width=120;
+   ColumnSelected number=4,width=125,size=30,color=255/255/255;
+   Column number=4,width=110;
+   ColumnSelected number=5,width=130,size=30,color=255/255/255;
+   Column number=5,width=110;
+   ColumnSelected number=6,width=350,size=30,color=255/255/255,dots=1;
+   Column number=6,dots=yes;
+
+//***************************************************************************
+[MenuExtRecordings]
+//***************************************************************************
+
+   Include=MenuCommon;
+   Defaults menu_y=90,menu_height=330,font=graphTFT,size=24,color=200/200/200,bg_alpha=0;
+
+
+// spacer
+   ColumnSelected number=5,width=1,focus=menu/menuCurrent.png;
+   Column number=5,width=1;
+// symbol
+   ColumnSelected number=1,size=30,color=255/255/255,width=40;
+   Column number=1,width=40;
+//
+   ColumnSelected condition={colCount} = 3,number=2,size=30,color=255/255/255,width=200;
+   Column condition={colCount} = 3,number=2,width=200;
+   ColumnSelected condition={colCount} = 3,number=3,size=30,color=255/255/255,width=150;
+   Column condition={colCount} = 3,number=3,width=150;
+// dir-count
+   ColumnSelected condition={colCount} > 3,number=2,size=30,color=255/255/255,width=190,spacing=20;
+   Column condition={colCount} > 3,number=2,width=190,spacing=20;
+// name
+   ColumnSelected condition={colCount} > 3,number=5,size=30,color=255/255/255,width=520,dots=1;
+   Column condition={colCount} > 3,number=5,width=520,dots=yes;
+   
+
+//***************************************************************************
+[MenuExtRecording]   // Detailed-Information Recording (extRecMenu Plugin Version)  
+//***************************************************************************
+
+   Include=MenuCommon;
+   Defaults menu_y=90,menu_height=330,font=graphTFT,size=24,color=200/200/200,bg_alpha=0;
+
+   Background path=backgrounds/bg-menu.png;
+ 
+// Output MenuTitle - Recording-Date   
+   Text text={menuTitle},x=20,y=10,width=330,height=60,size=36,lines=1,align=left,color=200/200/200,dots=1;
+   Text text={recordingTime/%a %d.%m - %H:%M },x=350,y=10,width=440,size=36,height=60,align=right,color=200/200/200;
+
+// Output Detailed-Information
+   Text text={recordingTitle},x=10,y=85,size=36,width=720,height=60,lines=1,color=250/250/250,dots=1;
+   Text text={recordingSubtitle},x=10,y=150,size=28,width=770,height=40,color=250/250/250;
+   Text text={recordingDescription},x=10,y=195,width=770,height=239,size=20,color=200/200/200,dots=1;
+   
+// colorbuttons
+   MenuButtonBackgroundRed x=8,y=430,width=192,height=43,pathON=menu/button-red.png,on_click=Red;
+   MenuButtonRed x=14,y=438,width=179,size=22,height=43,color=200/200/200/255,align=center;
+   MenuButtonBackgroundGreen x=205,y=430,width=192,height=43,pathON=menu/button-green.png,on_click=Green;
+   MenuButtonGreen x=212,y=438,width=179,size=22,height=43,color=200/200/200/255,align=center;
+   MenuButtonBackgroundYellow x=401,y=430,width=192,height=43,pathON=menu/button-yellow.png,on_click=Yellow;
+   MenuButtonYellow x=408,y=438,width=179,size=22,height=43,color=200/200/200/255,align=center;
+   MenuButtonBackgroundBlue x=597,y=430,width=192,height=43,pathON=menu/button-blue.png,on_click=Blue;
+   MenuButtonBlue x=604,y=438,width=179,size=22,height=43,color=200/200/200/255,align=center;
+   
+//***************************************************************************
+[MenuRecordings]
+//*************************************************************************** 
+  
+   Include=MenuCommon;
+   Defaults menu_y=90,menu_height=330,font=graphTFT,size=24,color=200/200/200,bg_alpha=0;
+
+// spacer
+   ColumnSelected number=4,width=1,focus=menu/menuCurrent.png;
+   Column number=4,width=1;
+   
+// Date
+   ColumnSelected number=1,width=180,size=30,spacing=20,color=255/255/255;
+   Column number=1,width=160;
+//
+   ColumnSelected condition={colCount} = 3,number=6,size=30,color=255/255/255;
+// Column condition={colCount} = 3,number=6,width=100;
+   ColumnSelected condition={colCount} = 3,number=3,size=30,color=255/255/255,width=150;
+// Column condition={colCount} = 3,number=3,width=150;
+// dir-count
+   ColumnSelected condition={colCount} > 3,number=2,,width=160,size=30,color=255/255/255,spacing=10;
+   Column condition={colCount} > 3,number=2,width=140,spacing=10;
+// Name
+   ColumnSelected condition={colCount} > 3,number=4,size=30,color=255/255/255,dots=1;
+   Column condition={colCount} > 3,number=4,width=400,dots=yes;
+
+   
+//***************************************************************************
+[MenuRecording]
+//*************************************************************************** 
+
+   Include=MenuExtRecording;
+   Defaults menu_y=90,menu_height=330,font=graphTFT,size=24,color=200/200/200,bg_alpha=0;
+   MenuButtonBackgroundBlue x=597,y=430,width=192,height=43,pathON=menu/button-blue.png,on_click=Blue;
+   MenuButtonBlue x=604,y=438,width=179,size=22,height=43,color=200/200/200/255,align=center;
+   
+//***************************************************************************
+[MenuChannels]
+//***************************************************************************
+
+   Include=MenuCommon;
+   Defaults menu_y=90,menu_height=330,font=graphTFT,size=24,color=200/200/200,bg_alpha=0;
+
+// spacer
+   ColumnSelected number=5,width=1,focus=menu/menuCurrent.png,spacing=20;
+   Column number=5,width=1,spacing=20;
+
+   ColumnSelected number=1,x=5,size=30,width=120,color=255/255/255;
+   Column number=1,x=5,width=120;
+   ColumnSelected number=2,x=85,size=30,color=255/255/255,scroll=marquee,scroll_count=2;
+   Column number=2,x=75;
+
+
+//***************************************************************************
+[MenuEvent] 
+//***************************************************************************
+
+   Include=MenuCommon;
+   Defaults menu_y=90,menu_height=350,font=graphTFT,size=24,color=255/255/255,bg_alpha=0;
+
+// Senderlogo Logo oben rechts
+   Image x=635,y=15,width=160,height=96,fit=yes,aspect_ratio=yes,path=logos/{presentChannelName}.png;
+
+// Start und Endezeit des gewaehlten Titels oben links
+   text text={EventTitle} - {EventSubtitle},x=10,y=115,width=770,height=40,dots=1;
+   text text={EventStartTime/%a %d.%m} - {EventStartTime/%H:%M}-{EventEndTime/%H:%M},x=10,y=155,width=780,height=40;
+
+// Progressbar
+// Timebar x=10,y=170,width=620,height=16,path=symbols/progress.png,bg_alpha=150;
+   Timebar x=10,y=85,width=630,height=25,path=symbols/progress_yellow.png,bg_alpha=150;
+
+// EPG Detailinformationen
+   text text={EventDescription},x=10,y=195,size=20,width=770,height=230,color=200/200/200,dots=1;
+
+
+//***************************************************************************
+[MenuEpgsSchedule] // Epgsearch
+//***************************************************************************
+
+   Include=MenuCommon;
+   Defaults menu_y=90,menu_height=350,font=graphTFT,size=24,color=200/200/200,bg_alpha=0;
+
+// Date
+   EventColumnSelected text={rowEventStartTime/%H:%M},x=5,width=120,size=30,spacing=20,focus=menu/menuCurrent_1.png,spacing=20,color=250/250/250;
+   EventColumn text={rowEventStartTime/%H:%M},x=10,width=120;
+
+// event
+   EventColumnSelected text={rowEventTitle},width=500,size=30,spacing=10,color=250/250/250,dots=1;
+   EventColumn text={rowEventTitle},spacing=10,dots=1; 
+
+
+//***************************************************************************
+[MenuSchedule] // Standard
+//***************************************************************************
+
+   Include=MenuEpgsSchedule;
+
+
+//***************************************************************************
+[MenuEpgsWhatsOn_logo_time]
+//***************************************************************************
+
+   Include=MenuCommon;
+   Defaults menu_y=90,menu_height=350,font=graphTFT,size=24,color=200/200/200,bg_alpha=0;
+   
+// Balken
+   EventColumnSelected text={},width=1,color=250/250/250,spacing=5;
+   EventColumn text={},width=1,spacing=5;
+
+// Balken
+   EventColumnSelected text={},width=1,color=250/250/250,focus=menu/menuCurrent_1.png,spacing=5;
+   EventColumn text={},width=1,spacing=5;
+
+// Sendername
+   EventColumnSelected text={rowEventChannelname},width=150,size=30,,spacing=20,color=250/250/250;
+   EventColumn text={rowEventChannelname},spacing=10,width=150;
+
+// Starttime
+   EventColumnSelected text={rowEventStartTime/%H:%M},width=110,size=30,,spacing=20,color=250/250/250;
+   EventColumn text={rowEventStartTime/%H:%M},width=110;
+   
+
+//***************************************************************************
+[MenuEpgsWhatsOn_Event]
+//***************************************************************************
+
+   Defaults menu_y=90,menu_height=350,font=graphTFT,size=24,color=200/200/200,bg_alpha=0;
+
+// Eventtitel
+   EventColumnSelected text={rowEventTitle},x=400,size=30,width=395,spacing=20,color=250/250/250,dots=1;
+   EventColumn text={rowEventTitle},width=420,spacing=20,dots=1;
+
+
+//***************************************************************************
+[MenuEpgsWhatsOnElse]
+//***************************************************************************
+
+   Include=MenuEpgsWhatsOn_logo_time;
+
+   Defaults menu_y=70,height=66,menu_height=400,font=graphTFT,size=24,color=255/255/255,bg_color=0/0/0/0;
+
+   Include=MenuEpgsWhatsOn_Event;
+
+
+
+//***************************************************************************
+[MenuEpgsWhatsOnNow]
+//***************************************************************************
+
+   Include=MenuEpgsWhatsOn_logo_time;
+   Defaults menu_y=90,menu_height=350,font=graphTFT,size=24,color=200/200/200,bg_alpha=0;
+
+// Progressbar Short
+   EventColumnSelected type=progress,width=70,spacing=10,bar_height=40%,bg_color=0/0/0/255,path2=symbols/progress_yellow.png;
+   EventColumn type=progress,width=70,spacing=10,bar_height=40%,bg_color=0/0/0/255,path2=symbols/progress_yellow.png;   
+
+
+   Include=MenuEpgsWhatsOn_Event;
+
+
+//***************************************************************************
+[MenuWhatsOnNow]
+//***************************************************************************
+
+   Include=MenuEpgsWhatsOnNow;
+
+
+//***************************************************************************
+[MenuEpgsWhatsOnNext]
+//***************************************************************************
+
+   Include=MenuEpgsWhatsOnElse;
+
+
+//***************************************************************************
+[MenuWhatsOnNext]
+//***************************************************************************
+
+   Include=MenuEpgsWhatsOnElse;
+   
+//***************************************************************************
+// Dia VIEW
+//***************************************************************************
+[NormalDia]
+
+   Include=Volume;
+   
+   Background path=backgrounds/bg-tv-images.png;
+   Defaults font=graphTFT,size=24,color=200/200/200,bg_color=0/0/0/0;
+   
+// Textausgabe des Kanalnamens im Kopfbereich
+   Text text={presentChannelName},x=20,y=7,width=620,height=65,size=40,bg_alpha=2,align=left;
+   
+// Timebar
+   Timebar x=10,y=85,width=630,height=25,path=symbols/progress_yellow.png,bg_alpha=150;
+   
+// Aktuelle Sendung
+   Text text={presentStartTime/%H:%M},x=20,y=117,width=160,height=70,size=40,color=255/255/255;
+   Text text={presentTitle},x=195,y=117,bg_x=195,bg_y=117,bg_width=650,bg_height=80,width=590,height=80,size=40,dots=yes,color=255/255/255;
+   Image x=265,y=190,width=270,height=200,
+   path={varEPGimagesPath_1}{presentID}.jpg
+   :{varEPGimagesPath_2}{presentID}.jpg
+   :{varEPGimagesPath_3}{presentID}.jpg
+   :{varEPGimagesPath_4}{presentID}.jpg
+   :{varImagesPath_1}{presentTitle}.jpg,
+   fit=yes,aspect_ratio=yes; //EPG Bild
+	
+// Iconleiste
+
+   Image x=0,y=400,width=800,height=78,path=backgrounds/button-bg-grey.png;
+
+   Image condition={channelHasVtx} = 0,x=30,y=400,width=80,height=78,path=symbols/vtxOff.png,fit=yes;
+   Image condition={channelHasVtx},x=30,y=400,width=80,height=78,path=symbols/vtxOn.png,fit=yes;
+   Image condition={channelHasDD} = 0, x=127,y=400,width=110,height=78,path=symbols/ddOff.png,fit=yes;
+   Image condition={channelHasDD},x=127,y=400,width=110,height=78,path=symbols/ddOn.png,fit=yes;
+   Image condition={channelIsEncrypted} = 0,x=390,y=400,width=110,height=78,path=symbols/cryptOff.png,fit=yes;
+   Image condition={channelIsEncrypted} = 1,x=390,y=400,width=110,height=78,path=symbols/cryptOn.png,fit=yes;
+   Image condition={actRecordingCount} = 0, x=530,y=400,width=110,height=78,path=symbols/recOff.png,fit=yes;
+   Image condition={actRecordingCount} > 0,x=530,y=400,width=110,height=78,path=symbols/recOn.png,fit=yes;
+   Image condition={channelHasMultilang} = 0, x=250,y=400,width=130,height=78,path=symbols/ch2Off.png,fit=yes;
+   Image condition={channelHasMultilang},x=250,y=400,width=130,height=78,path=symbols/ch2On.png,fit=yes;
+
+// Datum/Uhr unten rechts
+   Text text={time/%H:%M},x=630,y=409,size=40,color=255/255/255,align=left,width=160,height=60,bg_alpha=2;   
+
+   Include=OSD-Messages;  

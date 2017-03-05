@@ -1,0 +1,179 @@
+# VDR plugin language source file.
+# Copyright (C) 2007 Klaus Schmidinger <kls@cadsoft.de>
+# This file is distributed under the same license as the VDR package.
+# Hannu Savolainen <hannu@opensound.com>, 2002
+# Jaakko Hyv‰tti <jaakko@hyvatti.iki.fi>, 2002
+# Niko Tarnanen <niko.tarnanen@hut.fi>, 2003
+# Rolf Ahrenberg <rahrenbe@cc.hut.fi>, 2003
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: VDR 1.5.7\n"
+"Report-Msgid-Bugs-To: <vdr@jwendel.de>\n"
+"POT-Creation-Date: 2015-12-22 11:18+0100\n"
+"PO-Revision-Date: 2008-12-05 19:18+0100\n"
+"Last-Translator: Rolf Ahrenberg <rahrenbe@cc.hut.fi>\n"
+"Language-Team: <vdr@linuxtv.org>\n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-15\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Can't save snapshot, missing event information"
+msgstr ""
+
+msgid "Snapshot saved"
+msgstr ""
+
+msgid "Error saving snapshot"
+msgstr ""
+
+msgid "Reload themes"
+msgstr ""
+
+msgid "Refresh Display"
+msgstr ""
+
+msgid "Normal Display"
+msgstr ""
+
+msgid "Snapshot"
+msgstr ""
+
+msgid "--- end of playlist ---"
+msgstr ""
+
+msgid "GraphTFT"
+msgstr "GraphTFT"
+
+msgid "Theme"
+msgstr "Ulkoasu"
+
+msgid "Hide Mainmenu Entry"
+msgstr "Piilota valinta p‰‰valikosta"
+
+msgid "VDR use iso charset"
+msgstr ""
+
+msgid "Spectrum Analyzer (music)"
+msgstr ""
+
+msgid "Dump Image"
+msgstr ""
+
+msgid "Dump image to '/tmp/graphtftng.png'"
+msgstr ""
+
+msgid "Dump every [sec]"
+msgstr ""
+
+msgid "Snapshot width"
+msgstr ""
+
+msgid "Snapshot height"
+msgstr ""
+
+msgid "Snapshot JPEG Quality"
+msgstr ""
+
+msgid "Snapshot path"
+msgstr ""
+
+msgid "FB/X Device"
+msgstr ""
+
+msgid "Width"
+msgstr ""
+
+msgid "Height"
+msgstr ""
+
+msgid "FB Device"
+msgstr ""
+
+msgid "Flip OSD"
+msgstr ""
+
+msgid "X Offset"
+msgstr "Vaakakeskitys"
+
+msgid "Y Offset"
+msgstr "Pystykeskitys"
+
+msgid "Border to Width"
+msgstr "Leveysraja"
+
+msgid "Border to Height"
+msgstr "Korkeusraja"
+
+msgid "TCP Connection"
+msgstr ""
+
+msgid "JPEG Quality"
+msgstr ""
+
+msgid "touch Device"
+msgstr ""
+
+msgid "Device"
+msgstr ""
+
+msgid "Log"
+msgstr ""
+
+msgid "Log Device"
+msgstr "Debug-loki"
+
+msgid "Log Level"
+msgstr ""
+
+msgid "Test"
+msgstr ""
+
+msgid "Stop"
+msgstr ""
+
+msgid "Calibrate"
+msgstr ""
+
+msgid "Unknown title"
+msgstr ""
+
+msgid "No EPG data available."
+msgstr ""
+
+msgid "Title"
+msgstr ""
+
+msgid "Artist"
+msgstr ""
+
+#~ msgid "Debug"
+#~ msgstr "Debug"
+
+#~ msgid "Debug Level"
+#~ msgstr "Debug-taso"
+
+#~ msgid "Dump image width"
+#~ msgstr "Tallennettavan kuvan leveys"
+
+#~ msgid "Dump image height"
+#~ msgstr "Tallennettavan kuvan korkeus"
+
+#~ msgid "Convert Iso to UTF-8"
+#~ msgstr "Muunna ISO UTF-8:ksi"
+
+#~ msgid "Dump image to file"
+#~ msgstr "Tallenna kuva tiedostoon"
+
+#~ msgid "DVB Device"
+#~ msgstr "DVB-laite"
+
+#~ msgid "Use StillPicture"
+#~ msgstr "K‰yt‰ StillPicture-toimintoa"
+
+#~ msgid "Refresh"
+#~ msgstr "P‰ivit‰"
+
+#~ msgid "DVB/FB Device"
+#~ msgstr "DVB/FB-laite"

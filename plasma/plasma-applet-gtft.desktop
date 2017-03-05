@@ -1,0 +1,16 @@
+[Desktop Entry]
+Name=GraphTFT
+Comment=Frontend for VDR graphTFT plugin 
+Type=Service
+Icon=system-run
+X-KDE-ServiceTypes=Plasma/Applet
+X-KDE-Library=plasma_applet_gtft
+X-KDE-PluginInfo-Author=Jörg Wendel
+X-KDE-PluginInfo-Email=vdr@jwendel.de
+X-KDE-PluginInfo-Name=graphtft
+X-KDE-PluginInfo-Version=0.0.1
+X-KDE-PluginInfo-Website=
+X-KDE-PluginInfo-Category=Multimedia
+X-KDE-PluginInfo-Depends=
+X-KDE-PluginInfo-License=GPL
+X-KDE-PluginInfo-EnabledByDefault=true

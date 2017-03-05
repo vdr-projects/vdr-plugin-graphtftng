@@ -1,0 +1,419 @@
+
+=========================================================================================
+== Eigene graphTft-NG Theme erstellen
+=========================================================================================
+
+
+Es gibt grundsäzlich folgede Syntax Bestandteile für Theme Files
+----------------------------------------------------------------
+
+1.) Sektionen
+Sektionen werden durch den Namen der Sektion in eckigen Klammern definiert.
+Eine Sektion hÃ¤lt eine Menge Items zusammen welche 'gleichzeitig' angezeigt werden sollen. So ziemlich jeder Ansicht/MenÃ¼ des VDRs kann eine Sektion zugeordnet werden, das hÃ¤ngt von der Methode 'MenuKind' ab welche durch das graphTFT Patch in den VDR kommt und je MenÃ¼ oder Ansicht einen anderen Bezeichner zurÃ¼ckgibt. Einige Plugins unterstÃ¼tzen dies ebenso (epgsearch, extrec, ...).
+Darüberhinaus kann man weitere, beliebige Sektionen definieren um Items zu gruppieren und in anderen Sektionen per Include wiederzuverwenden. Eine Besonderheit sind hierbei Sektionen dessen Name mit 'Normal' beginnt, zwischen diesen kann bei LiveTV mittels Plugin-MenÃ¼ und SCVDP hin und her geschaltet werden.
+
+2.) Items
+Die anzuzeigenden Items wie Text, Image ColorButton, Menu... etc. (Liste im nÃ¤chsten Thread)
+
+3.) Parameter
+Die Parameter der Theme Items, mittels dieser wird Position, Farbe, Größe etc. des Items bestimmt
+
+4.) Variablen
+Hier gibt es eine Menge automatisch gefÃ¼llter welche von Plugin je nach Kontext mit aktuellen Daten gefÃ¼llt werden welche gerade zur VerfÃ¼gung stehen ist vom Kontext abhÃ¤ngig in dem der VDR sich befindet (LiveTV, Wiedergabe, EpgMenÃ¼, MauptmenÃ¼, MenÃ¼(XYZ). Weiterhin kann man im Theme eigene Variablen definieren z.B. um an zentraler Stelle einige Einstellungen machen zu kÃ¶nnen. Variablen dienen in erster Linie der Zuordnung zu den Parametern, so setzt man z.B. den Wert des text Parameters auf den akztuellen Sendungstitel indem man die Variable presentTitle verwendet: text={presentTitle}.
+Variablen lÃ¶st man mittels der geschweiften Klammern auf. Zum Teil gibt es zu den Variablen noch Formatierungsanweisung welche mittels / getrennt angegeben werden kÃ¶nnen. Aktuell beschrÃ¤nken sich diese auf 'upper', 'lower' und die Formatstrings fÃ¼r die Formatierung von datum und zeit welcher der Manpage von strftime entsprechen. Den aktuellen Titel in Kleinbuchstaben erhÃ¤lt man somit mittels: {presentTitle/lower}
+
+5.) Schlüsselwörter und Direktiven
+Dazu kommen SchlÃ¼sselwÃ¶rter wie Include und var sowie die Direktiven (#ifdef, #define, #ifndef und #endif).
+
+6.) Kommentare, diese beginnen mit // und werden beim einlesen der Theme bis zum Zeilenende ignoriert.
+Inline Kommentage sind möglich.
+
+
+=========================================================================================
+== Direktiven
+=========================================================================================
+
+- #define <value>
+- #ifdef <value>
+- #ifndef <value> 
+- #else 
+- #endif
+
+=========================================================================================
+== Vorgegebene Theme Sektionen
+=========================================================================================
+
+"MenuEditChannel"
+"MenuChannels"
+"MenuTimers"
+"MenuWhatsOnNow"
+"MenuWhatsOnNext"
+"MenuSchedule"
+"MenuCam"
+"MenuRecording"
+"MenuSetupOsd"
+"MenuSetupEpg"
+"MenuSetupDvb"
+"MenuSetupLnb"
+"MenuSetupCam"
+"MenuSetupPlugins"
+"MenuSetup"
+"MenuText"
+"MenuTimerEdit"
+"MenuEvent"
+"MenuMain"
+"MenuRecordings"
+"MenuSetupPage"
+
+Für epgsearch:
+	
+"MenuEpgsSchedule"
+"MenuEpgsWhatsOnElse"
+"MenuEpgsWhatsOnNow" 
+"MenuEpgsFavorites"
+"MenuEpgsWhatsOnNext"
+
+
+Für extrec kommen diese hinzu:
+	
+"MenuExtRecording"
+"MenuExtRecordings"
+
+Menüs welche (in Plugins) dies nicht definiert ist wird 'MenuUnknown' verwendet, für alle 
+Sektionsanfragen die im Theme fehlen wird die Sektion "Menü" gewählt, diese sollte mindestens definiert sein.
+
+=========================================================================================
+== Theme Items 
+=========================================================================================
+
+-----------------
+   Item: Text
+-----------------
+
+      x, y, width, height, size, font, ...: -> wie immer ;)
+
+      text:  -> Anzuzeigender Text
+                Der Text kann Variablen enthalten, diese werden in 
+                geschweiften Klammern angegeben. Für Datum/Zeit Felder
+                kann koptional ein Formatsting definiert werden.
+                Der Formatstring für Datum/Zeit entspicht dem in der 
+                Manpage zu strftime beschriebenen.Anzuzeigende Kommata 
+                und Semikola im Formatsring müssen mit '\' maskiert werden
+
+   Beispiel:
+
+     Text text={time/%d.%m %H:%M},x=520,y=27,width=200,height=40,red=52,green=162,blue=159;
+
+
+------------------
+   Item: TextList
+------------------
+
+   Parameter:
+
+      x, y:              -> obere linke Ecke 
+      width, height:     -> Höhe/Breite der 'ganzen' Liste
+      size, font, ...:   -> wie immer ;)
+
+   Bemerkung:
+
+      Es werden so viele Einträge angezeit wie in den vorgegebenen Bereich passen.
+
+   Beispiel:
+
+      TextList text={actTimersRunning},x=245,y=335,height=160,width=450,size=12;
+
+-----------------------------------
+   Item: Column und ColumnSelected
+-----------------------------------
+
+   Column             -> the column
+   ColumnSelected     -> the selected column
+
+   Parameter:
+
+    x:                  
+        not configured     -> x will calculated of the last column's x and width
+                              (regarding 'spacing')
+        -1                 -> same as 'not configured'
+        geater org equal 0 -> uses as absolut position
+        less than -1       -> go x pixel back from the actual position
+                              which is calculated like 'not configured'
+                              (regarding 'spacing')
+
+
+    height                 -> height of the whole column (including all rows)
+
+    size                   -> font size, the row height will calculatetd 
+                              using this value
+
+    width                  -> the column width
+
+    spacing:               -> used for auto calculated x positions, 
+                              add some extra space behind this column
+
+    type:
+        progress  -> progress bar
+        text      -> normal text column (the default)
+        image     -> show a image instead of the text. The image name will build of the text.
+                     The image is expected in the 'symbols' subdir of the theme.
+                     Example: 
+                       For The Text "T" (Timer Flag) the image .../DeepBlue/symbols/T.png will used.
+                       For The Text "V" (VPS Flag)   the image .../DeepBlue/symbols/V.png will used.
+
+
+    bar_height: only for 'type=progress'
+                  -> height of the progress bar, absolut (bar_height=24) 
+                     or in percent (bar_height=50%) of the row height
+
+
+    number:        
+        the # of the original menu column this column depends on
+
+
+    stat_pic:    only supported for itemColumnSelected
+        yes:      -> display a image on position stat_x, stat_y
+                     the image path and name is build like:
+                     "..../graphTFT/themes/<your-theme>/columnimages/" + <column-text> + ".png";
+                     If now image will found, nothing would displayed.
+        no:       -> do nothing (default)
+
+
+    stat_text:    only supported for itemColumnSelected
+        yes:      -> display the column text on position stat_x, stat_y
+        no:       -> do nothing (default)
+
+      
+    scroll:       activate/deactivate the scroll mode for this column
+                  only supported for 'ColumnSelected' items
+
+        yes:      -> activate scrolling (depending on plugin settings!)
+        no:       -> deactivate scrolling
+
+
+   Hinweise:
+
+   - to display a static picture or a static text depend on a coulumn which you don't like
+     to display 'itself' define the coulumn with the stat_** attributes as you like and 
+     suppress the column by setting with to -1.
+
+   - itemColumnSelected should always defined before the corresponding itemColumn
+     like itemMenuSelected and itemMenu formerly. For the image of the selected column
+     (path=) you can use one (wide enough for all columns) and set it for the first column. 
+     Alternative it is possible to define one image per column.
+
+----------------------
+ 'PartingLine' item
+----------------------
+
+    Repräsentiert nicht auswählbare Menüzeilen (Treennlinien wie die z.B. Gruppierungen bei epgseearch)
+
+    path:    ->  the Image shown for lines with text, like "--------------  Thu 07.11.2006 -----------"
+    path2:   ->  the Image shown for lines without text, like "------------------------------------------"
+
+    align:  text align
+            0 -> left
+            1 -> center
+            2 -> right
+
+
+=========================================================================================
+== Vordefinierte Theme Variablen
+=========================================================================================
+
+Die Variablen setzen sich aus einem Präfix und Bezeicher zusammen, der Präfix spezifiziert den Context. 
+Beispiel der Titel der aktuellen Sendung steht in "presentTitle", der Titel der folgenden Sendung in "followingTitle"
+Wo und wann die Variablen verfügbar sind ist abhängig vom Präfix, siege unten
+
+
+Präfix:
+----------------------------------------
+
+event               (Event in der Event Info Ansicht)
+present             (aktuelles Event in der Live TV/Radio)
+following           (folgendes Event in der Live TV/Radio)
+rowEvent            (Zeile eins EPG Menüs)
+selectedRowEvent    (gewählte Zeile eins EPG Menüs)
+
+Für diese gibt es folgende Ausprägungen:
+----------------------------------------
+
+ Title
+ SubTitle
+ Description
+ ChannelName
+ ChannelNumber
+ ID
+ StartTime
+ EndTime
+ Duration
+ HasTimer
+ HasPartialTimer
+ HasPartialTimerBefore
+ HasPartialTimerAfter
+ IsRunning
+ Elapsed
+ Remaining
+ Progress
+ IsRecording
+
+
+Präfix:
+----------------------------------------
+
+recording  (Aufnahme im Aufnahme-Info Menü)
+replay     (aktuell wiedergegebene Aufnahme)
+
+Ausprägungen:
+----------------------------------------
+
+ Speed
+ Play
+ Forward
+ Current
+ Total
+ RawCurrent
+ RawTotal
+ Title
+ Path
+ Time
+ EventID
+ SubTitle
+ Description
+ Channel
+ Title
+ EventID
+ SubTitle
+ Channel
+ Path
+ Time
+ Description
+
+Präfix:
+----------------------------------------
+
+calibration (beim callibrieren des Touch)
+
+Ausprägungen:
+----------------------------------------
+
+ Instruction
+ Info
+ CursorX
+ CursorY
+ TouchedX
+ TouchedY
+ OffsetX
+ OffsetY
+ ScaleX
+ ScaleY
+
+
+Allgemeine Variablen ohne Präfix, in jeden Kontext verfügbar:
+--------------------------------------------------------------
+
+ textWidth
+ colCount
+ rowCount
+ visibleRows
+ currentRow
+ touchMenu
+ themeVersion
+ syntaxVersion
+ themeName
+ vdrVersion
+ mouseX
+ mouseY
+ mouseKey
+ actRecordingCount
+ actRecordingName
+ actTimersRunning
+ actTimersTitle
+ actTimersFile
+ actTimersStart
+ actTimersStop
+ STR
+ SNR
+ unseenMailCount
+ hasNewMail
+ channelHasVtx
+ channelHasMultilang
+ channelHasDD
+ channelIsEncrypted
+ channelIsRadio
+ videoSizeHeight
+ videoSizeWidth
+ time
+ volumeMute
+ volumeLevel
+
+ menuText   (nur in Menüs mit Fließtext verfügbar)
+ menuTitle  (nur in Menüs verfügbar)
+
+
+Präfix: 
+----------------------------------------
+
+'music' (nur für das Music-Plugin)
+
+Ausprägungen:
+----------------------------------------
+
+ Track
+ Artist
+ Album
+ Genre
+ Year
+ Filename
+ Comment
+ Frequence
+ Bitrate
+ StereoMode
+ Index
+ Count
+ CurrentTrack
+ PlayStatus
+ CoverName
+ Rating
+ Loop
+ Timer
+ Copy
+ Lyrics
+ Shuffle
+ Shutdown
+ Recording
+ ButtonRed
+ ButtonGreen
+ ButtonYellow
+ ButtonBlue
+
+
+=========================================================================================
+== Details zu den Parametern
+=========================================================================================
+
+-----------------------
+ Parameter: condtition
+-----------------------
+
+  Sollen Theme Items nur in bestimmten Situationen angezeigt 
+  werden kann dies uber den Parameter condition erreicht werden.
+  Bedingungen können aufbauend auf den unten beschriebenen Variablen 
+  definiert werden.
+
+  Unterstütze Operatoren:
+
+    <   keiner
+    >   größer
+    <=  keiner gleich
+    >=  größer gleich
+    <>  ungleich
+    !=  ungleich
+    ==  gleich (c/c++ like ;))
+
+  Beispiele:
+
+   TextList condition={actTimersRunning} = 0,text={actTimersStart/%a %H:%M}  - {actTimersStop/ %H:%M}   {actTimersTitle},
+         x=15,y=435,height=258,width=1340,size=26,color={normalColor};
+
+   Image condition={channelHasVtx} = 0,x=391,y=688,width=75,height=70,path=vtxOff.png,fit=yes,overlay=yes;

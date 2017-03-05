@@ -1,0 +1,66 @@
+--- ../../xsnow.org/xsnow-1.42/toon_root.c	2001-12-16 00:09:39.000000000 +0100
++++ ./toon_root.c	2013-11-08 16:37:09.075742684 +0100
+@@ -224,6 +224,45 @@
+   return winreturn;
+ }
+ 
++static Window __ToonGetWindowByName(Display *display, int screen, Window window, int depth, const char* useName)
++{
++   Window rootReturn, parentReturn, *children;
++   Window winreturn = (Window)0;
++   unsigned int nChildren;
++   char* name = NULL;
++
++   if (depth > 5)
++       return (Window)0;
++
++   if (XQueryTree(display, window, &rootReturn, &parentReturn, &children, &nChildren)) 
++   {
++      int i;
++
++      for (i = 0; i < nChildren; ++i) 
++      {
++         XWindowAttributes attributes;
++         
++         if (XFetchName(display, children[i], &name))
++         {
++            if (strcasecmp(name, useName) == 0)
++            {
++               winreturn = children[i];
++               break;
++            }
++         }
++
++         winreturn = __ToonGetWindowByName(display, screen, children[i], depth+1, useName);
++
++         if (winreturn)
++            break;
++      }
++
++      XFree((char *) children);
++   }
++
++  return winreturn;
++}
++
+ 
+ /* 
+  * Returns the window ID of the `background' window on to which the
+@@ -253,7 +292,16 @@
+ 
+   *clientparent = root;
+ 
+-  if (XGetWindowProperty(display, root,
++  if (background = __ToonGetWindowByName(display, screen, root, 0, "graphtft-fe"))
++  {
++     *clientparent = background;
++     snprintf(toon_message, TOON_MESSAGE_LENGTH,
++              _("Drawing to graphtft-fe"));
++     toon_message[TOON_MESSAGE_LENGTH-1] = '\0';
++  }
++
++  if (!background
++      && XGetWindowProperty(display, root,
+ 			 NAUTILUS_DESKTOP_WINDOW_ID,
+ 			 0, 1, False, XA_WINDOW,
+ 			 &actual_type, &actual_format,

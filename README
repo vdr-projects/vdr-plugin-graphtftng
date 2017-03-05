@@ -1,0 +1,123 @@
+---------------------------------------------------------------------------------
+Current Versions:
+
+Written by:                  Jörg Wendel <vdr@jwendel.de>
+Project's homepage:          http://projects.vdr-developer.org/projects/plg-graphtftng
+
+---------------------------------------------------------------------------------
+Previous Versions:
+
+Written by:                  Lars Tegeler <graphtft@habmalnefrage.de>
+Project's homepage:          www-math.uni-paderborn.de/~tegeler/vdr/graphtft
+---------------------------------------------------------------------------------
+
+---------------------------------------------------------------------------------
+This software is released under the GPL, version 2 (see COPYING).
+Additionally, compiling, linking, and/or using the OpenSSL toolkit in
+conjunction with this software is allowed.
+---------------------------------------------------------------------------------
+
+README.themes for creating themes and the HISTORY for changes.
+---------------------------------------------------------------------------------
+
+EPG Bilder:
+-----------
+EPG Bilder können in der Aufnahmebeschreibung, der EPG-Filmbeschreibung während
+der Wiedergabe und beim TV schauen angezeigt werden. Die Pfade sind frei konfigurierbar und können
+einen variablen Teil, in geschweifen Klammern, enthalten. Mehrere Pfade werden mit ':' getrennt angegeben.
+Pfade werden in der konfigurierten Reihenfolge durchsucht.
+
+Beispiel:
+
+Item=RecordingImage,x=150,y=300,width=400,height=200,path={recordingPath}/thumbnail.png:/video0/epgimages/{eventID}.png:/video0/images/{recordingTitle}.png,fit=yes,aspect_ratio=yes,delay=15;
+
+Recording Variablen (ReplayNormal, MenuRecording):
+ recordingPath
+ recordingTitle
+ eventID
+
+Bilder werden in einem Cache verwaltet (imlib feature) wodurch die Darstellung beschleunigt wird. Dadurch werden jedoch 
+Änderungen auf dem Filesystem nicht erkannt. Sollen Bilder zur Laufzeit verändert werden kann der Chache für bestimmte Bilder 
+mittels einem chg_ im Namen deaktiviert werden. 
+
+Beispiel für Bilder in den Aufnahmedetails:
+
+[MenuRecording]
+...
+...
+// EPG Bild ausgeben
+
+Image x=600,y=60,width=200,height=125,
+	path={recordingPath}/thumbnail_?.png:
+	{varEPGimagesPath_1}{recordingEventID}.png:
+	{varEPGimagesPath_2}{recordingEventID}.png:
+	{varEPGimagesPath_3}{recordingEventID}.png:
+	{varImagesPath_1}{recordingTitle}.jpg:
+	backgrounds/filmspule_tr.png,
+	fit=yes,aspect_ratio=yes;
+...
+
+
+Demo-Theme (DeepBlue-horchi):
+-----------------------------
+Ein zur aktuellen Version passendes Beispiel-Theme 
+lieg in themes/DeepBlue.theme (nur das Theme File). Das komplette Theme mit Symbolen und 
+Logos gibt es hier www.jwendel.de/vdr/DeepBlue-horchi-x.x.x.tar.bz2 (bitte DeepBlue.theme 
+gegen die aktuelle tauschen). Dann noch die Fonts (www.jwendel.de/vdr/deepblue-fonts.tar.bz2) 
+nach <vdr-config-dir>/plugins/graphTFT/fonts/ auspacken. 
+
+Im Theme sind für einige Items auskommentierte Alternativen enthalten,
+unter anderem:
+
+> // ways to display the timebar
+> Timebar x=523,y=12,width=184,height=18,bg_x=520,bg_y=9,bg_width=190,bg_height=24,bg_red=0,bg_green=0,bg_blue=0,path=columnimages/progress.png;
+> // Timebar x=525,y=12,width=180,height=21,bg_x=520,bg_y=8,bg_width=190,bg_height=29,bg_red=0,bg_green=0,bg_blue=0,switch=yes;
+> // Timebar x=525,y=12,width=180,height=21,bg_x=520,bg_y=8,bg_width=190,bg_height=29,bg_red=0,bg_green=0,bg_blue=0,switch=no;
+
+Die Sektion [MenuRecordings] geht von folgenden Einstellungen aus (ansonsten ist die Sektion anzupassen):
+ShowRecDate = 1
+ShowRecLength = 1
+ShowRecTime = 1
+
+
+ExtrecMenu Plugin:
+------------------
+Hierfür ist in den Themes eine eigene Sektion vorgesehen ([MenuExtRecordings]).
+
+Das Demo Theme Passt zu folgenden Einstellungen, sind andere gewünscht bitte das Theme 
+entsprechend anpassen:
+
+extrecmenu.ShowRecDate = 1
+extrecmenu.ShowRecLength = 1
+extrecmenu.ShowRecTime = 1
+
+EpgSearch Plugin:
+-------------------
+Muss sofern hier patch/epgsearch-x.x.x.diff ein Patch zufinden ist damit 
+gepatched werden. Es werden [MenuEpgs....] Sektionen verwendet. Um das Demo Theme 
+nicht anpassen zu müssen kann thems/epgsearchmenu.conf verwendet werden.
+
+
+Blinkender Cursor:
+------------------
+(Danke DrBoon für den Tipp)
+Für die die /dev/fb0 als Ausgabedevice benutzen, und Probleme mit Konsolenausgaben 
+oder dem Powermanagement des Monitors haben:
+
+setterm -powersave off
+setterm -blank 0
+setterm -powerdown 0
+chvt 11
+echo -e '\033[?25l' > /dev/tty11
+
+beseitigt den blinkenden Cursor, die Ausgaben der Konsole sowie das Umschalten 
+in den Ruhezustand. Wobei "setterm -powersave off" nur funktioniert, 
+wenn man auf der betreffenden Konsole ist und tty11 nicht bei allen 
+Distributionen eingerichtet ist. 
+
+
+Special thanks for help during development
+---------------------------------------------------------------------------
+Volker Leonhardt (data) 
+For the avp theme, many ideas, testing and bug reporting
+

@@ -1,0 +1,20 @@
+--- ../plain.0/extrecmenu-1.1//./mymenurecordings.c	2007-10-24 19:29:46.000000000 +0200
++++ ./mymenurecordings.c	2007-11-18 18:14:50.000000000 +0100
+@@ -51,6 +54,10 @@
+ {
+   cOsdMenu::Display();
+ 
++#ifdef USE_GRAPHTFT
++  cStatus::MsgOsdSetRecording(recording);
++#endif
++
+   if(mysetup.UseVDRsRecInfoMenu)
+   {
+     DisplayMenu()->SetRecording(recording);
+@@ -93,6 +100,7 @@
+     text << tr("Lifetime") << ": " << recording->lifetime << "\n";
+ 
+     DisplayMenu()->SetText(text.str().c_str(),false);
++    cStatus::MsgOsdTextItem(text.str().c_str());
+   }
+ }

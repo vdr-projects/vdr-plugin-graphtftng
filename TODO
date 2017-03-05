@@ -1,0 +1,15 @@
+
+----
+BUGS
+----
+
+- Problem beim anwählen eine Menüzeile sobald das Menü mehrere 
+   genau identischen Zeilen enthält
+
+-----
+TODOS
+-----
+
+- inotify
+
+

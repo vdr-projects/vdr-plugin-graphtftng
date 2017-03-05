@@ -1,0 +1,71 @@
+--- ../plain.0/epgsearch-0.9.24//menu_main.c	2008-04-13 20:53:44.000000000 +0200
++++ menu_main.c	2008-09-27 14:05:23.000000000 +0200
+@@ -73,6 +73,23 @@
+     }
+ }
+ 
++#ifdef USE_GRAPHTFT
++void cMenuSearchMain::Display(void)
++{
++   cOsdMenu::Display();
++   
++   if (Count() > 0) 
++   {
++      int i = 0;
++
++      for (cOsdItem *item = First(); item; item = Next(item)) 
++         cStatus::MsgOsdEventItem(!item->Selectable() ? 0 : 
++                                  ((cMenuMyScheduleItem*)item)->event, 
++                                  item->Text(), i++, Count());
++   }
++}
++#endif /* GRAPHTFT */
++
+ cMenuSearchMain::~cMenuSearchMain()
+ {
+     cMenuWhatsOnSearch::ScheduleChannel(); // makes sure any posted data is cleared
+--- ../plain.0/epgsearch-0.9.24//menu_main.h	2008-04-13 20:53:43.000000000 +0200
++++ menu_main.h	2008-09-09 21:43:40.000000000 +0200
+@@ -57,6 +57,7 @@
+   void UpdateCurrent();
+ #ifdef USE_GRAPHTFT
+   virtual const char* MenuKind() { return "MenuEpgsSchedule"; }
++  virtual void Display(void);
+ #endif
+ };
+ 
+--- ../plain.0/epgsearch-0.9.24//menu_whatson.c	2008-04-22 19:18:24.000000000 +0200
++++ menu_whatson.c	2008-09-27 14:05:47.000000000 +0200
+@@ -296,7 +296,22 @@
+    if (currentShowMode > showNext)  return "MenuEpgsWhatsOnElse";
+    else return "MenuWhatsOnElse";
+ }
+-#endif
++
++void cMenuWhatsOnSearch::Display(void)
++{
++   cOsdMenu::Display();
++   
++   if (Count() > 0) 
++   {
++      int i = 0;
++
++      for (cOsdItem *item = First(); item; item = Next(item)) 
++         cStatus::MsgOsdEventItem(!item->Selectable() ? 0 : 
++                                  ((cMenuMyScheduleItem*)item)->event, 
++                                  item->Text(), i++, Count());
++   }
++}
++#endif /* GRAPHTFT */
+ 
+ int cMenuWhatsOnSearch::GetTab(int Tab)
+ {
+--- ../plain.0/epgsearch-0.9.24//menu_whatson.h	2008-04-13 20:53:42.000000000 +0200
++++ menu_whatson.h	2008-09-09 21:43:12.000000000 +0200
+@@ -79,6 +79,7 @@
+   void UpdateCurrent();
+ #ifdef USE_GRAPHTFT
+   virtual const char* MenuKind();
++  virtual void Display(void);
+ #endif
+ };

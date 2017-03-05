@@ -1,0 +1,1276 @@
+//***************************************************************************
+// Rework of nOpacity Theme, based on the great work of Santos,Ckone!
+//
+// (c) 2014 Jörg Wendel
+//
+// This code is distributed under the terms and conditions of the
+// GNU GENERAL PUBLIC LICENSE. See the file COPYING for details.
+//***************************************************************************
+
+// -------------------------------------
+// set paths to fit your environment
+// -------------------------------------
+
+var chanLogos = "/usr/share/vdr-skins/logos4nOpacity";
+// var chanLogos = "/usr/share/vdr/plugins/skinnopacity/logos";
+
+var varEPGimagesPath_1 = "/var/cache/vdr/epgimages/";
+var varEPGimagesPath_2 = "/video0/epgimages/";
+
+// -------------------------------------
+// select color scheme
+// -------------------------------------
+
+// #define LIGHT_BLUE
+#define DARK_BLUE
+// #define DARK_BLUE_PLAIN
+
+// -------------------------------------
+// activate if you have the Hardware
+// -------------------------------------
+
+//#define WEATHER
+//#define P4
+//#define SYSINFO
+
+//***************************************************************************
+// Theme Style
+//***************************************************************************
+
+#ifdef DARK_BLUE
+
+   // ------------------------
+   // dark blue
+
+   var selColor = "255:255:255:255";
+   var unselColor = "200:200:200:255";
+   var menuTitleColor = "255:255:255:255";
+   var tdColor = "255:255:255:255";
+   var tdMainColor = "200:200:200:255";
+   var textColor = "180:180:180:255";
+   var lightColor = "255:255:255:255";
+   var signalColor = "255:55:55:255";
+   var boxColor = "160:160:160:255";
+   var ptLineColor = "100:150:250:255";
+   var titleColor = "255:255:255:255";
+   var subtitleColor = "255:255:255:255";
+   var descriptionColor = "238:232:180";
+
+   var symbols = "symbols";
+   var menuBackground = "menu.darkblue";
+   var backgrounds = "backgrounds.darkblue";
+
+#endif
+
+#ifdef DARK_BLUE_PLAIN
+
+   // ------------------------
+   // dark blue plain
+
+   var selColor = "255:255:255:255";
+   var unselColor = "200:200:200:255";
+   var menuTitleColor = "255:255:255:255";
+   var tdColor = "255:255:255:255";
+   var tdMainColor = "200:200:200:255";
+   var textColor = "180:180:180:255";
+   var lightColor = "255:255:255:255";
+   var signalColor = "255:55:55:255";
+   var boxColor = "160:160:160:255";
+   var ptLineColor = "100:150:250:255";
+   var titleColor = "255:255:255:255";
+   var subtitleColor = "255:255:255:255";
+   var descriptionColor = "200:200:200";
+
+   var symbols = "symbols";
+   var menuBackground = "menu.darkblue_plain";
+   var backgrounds = "backgrounds.darkblue_plain";
+
+#endif
+
+#ifdef LIGHT_BLUE
+
+   // ------------------------
+   // light gold-blue
+
+   var selColor = "0:0:0:255";
+   var unselColor = "200:200:200:255";
+   var menuTitleColor = "255:203:12:255";
+   var tdColor = "250:200:20:255"; 
+   var tdMainColor = "200:200:200:255";
+   var textColor = "200:200:200:255";
+   var lightColor = "255:203:12:255";'
+   var signalColor = "255:55:55:255";
+   var boxColor = "255:203:12:255";
+   var ptLineColor = "100:150:250:255";
+   var titleColor = "255:255:255:255";
+   var subtitleColor = "255:255:255:255";
+   var descriptionColor = "255:236:139";
+
+   var symbols = "symbols"
+   var backgrounds = "backgrounds.lightblue"
+   var menuBackground = "menu.lightblue"
+
+#endif
+
+[Theme]
+ 
+   Theme name=nOpacity,dir=nOpacity,
+     width=1360,height=768,
+     themeVersion=0.1.0,
+     syntaxVersion=0.4.1,
+     fontPath=./fonts,
+     startImage=backgrounds/start.png,
+     endImage=backgrounds/end.png;
+
+//***************************************************************************
+// OSD Message
+//***************************************************************************
+
+[OSDMessage]
+
+   Message y=625,height=80,bg_x=20,bg_y=620,bg_height=90,bg_width=1300,fit=yes,align=center,size=42,
+      path={backgrounds}/bg-message-green.png;
+
+//***************************************************************************
+// Volume 
+//***************************************************************************
+
+[Volume] 
+
+   Defaults font=graphTFT;
+
+   Volumebar condition={volumeMute} = 0,x=40,y=385,width=1280,height=110,switch=yes,bg_red=100,bg_green=100,bg_blue=100,permanent=no,delay=3;
+   Volumebar condition={volumeMute} = 0,x=30,y=400,width=1300,bg_x=30,bg_y=260,bg_width=1300,path2=backgrounds/volume.png,permanent=no,delay=3;
+   Volumebar condition={volumeMute} = 0,text=percent,size=50,color=0:0:0,x=500,y=365,permanent=no,delay=3;
+
+   VolumeMuteSymbol x=1077,y=673,width=90,height=90,fit=yes,pathON={symbols}/mute_on.png,permanent=yes;
+  
+//***************************************************************************
+// Normal TV/Radio View  (svdrpsend PLUG graphtft VIEW Standard)
+//***************************************************************************
+
+[TV_Radio_Common]
+
+   Background path=backgrounds/bg-tv.png;
+   Defaults font=graphTFT,size=24,color={textColor},bg_color=20:110:220:0;
+
+#ifdef WEATHER
+   VariableFile name=w,file=/tmp/weather.txt,delay=10;
+   Text text=Aussen {w.varTime/%d. %b %H:%M},size=18,color={lightColor},x=1070,y=125,width=260,height=30,delay=10; 
+   Text text={w.varTempKombiValue}°C / {w.varHumKombiValue}%,color={lightColor},size=28,x=1070,width=260,height=40,delay=10;
+   Text text={w.varWindKombiValue} m/s,color={lightColor},size=28,x=1070,width=140,height=40,delay=10; 
+#endif
+
+#ifdef P4
+   VariableFile name=p4,file=/tmp/p4.txt,delay=10;
+   Text text=Heizung,color={lightColor},size=18,x=1070,width=110,height=30,delay=10; 
+   Text text={p4.varPuffertemperaturunten_0x78Value}°C / {p4.varPuffertemperaturoben_0x76Value}°C,color={lightColor},size=28,x=1070,width=285,height=40,delay=10;
+   Text text={p4.varStatusText},color={lightColor},size=30,height=45,x=1070,width=285,dots=yes,delay=10;
+#endif
+
+#ifdef SYSINFO
+   VariableFile name=sys,file=/tmp/sysinfo.txt,delay=10;
+   Text text=Sysinfo {sys.varTime/%d. %b %H:%M},size=18,color={lightColor},x=1070,y=125,width=260,height=30;
+   Text text=CPU Temp: {sys.varCPUTempKombiValue} °C,color={lightColor},size=18,x=1070,width=260,height=28;
+   Text text=GPU Temp: {sys.varGPUTempKombiValue} °C,color={lightColor},size=18,x=1070,width=260,height=28;
+   Text text=PCH Temp: {sys.varCHIPTempKombiValue} °C,color={lightColor},size=18,x=1070,width=260,height=28;
+   Text text=CPU: {sys.varCPUBusyKombiValue} %,color={lightColor},size=18,x=1070,width=260,height=28;
+   Text text=RAM frei: {sys.varMemFreeKombiValue} MB,color={lightColor},size=18,x=1070,width=260,height=28;
+   Text text=Disk frei: {sys.varVideoFreeKombiValue} GB,color={lightColor},size=18,x=1070,width=260,height=28;
+   Text text=Kernel: {sys.varKernelKombiValue},color={lightColor},size=18,x=1070,width=260,height=28;
+#endif
+
+   // Kanalnummer Kanalnamen oben
+
+   Text debug=channelname_number,condition="{channelGroup}" = "",x=5,y=0,text={presentChannelNumber}  {presentChannelName},size=40,align=left,width=1050,
+      height=60,color={menuTitleColor},on_click=Schedule Yellow;
+
+   Text debug=channelname_number,condition="{channelGroup}" != "",x=5,y=0,text={channelGroup},size=40,align=center,width=1050,
+      height=60,color={descriptionColor},on_click=Schedule Yellow;
+
+   // Timebar oben
+
+   Timebar x=6,y=66,width=1049,height=14,path={symbols}/progress.png,
+       bg_x=2,bg_y=64,bg_height=18,bg_width=1056,bg_color=105:105:105:255; 
+
+   // Senderlogo Logo oben rechts
+
+   Image debug=channellogo,x=1152,y=0,width=190,height=115,bg_x=1140,bg_y=2,bg_width=205,bg_height=120,fit=yes,aspect_ratio=no,
+       path={chanLogos}/{presentChannelName/lower}.png,path2=symbols/channellogoback.png,on_click=Schedule;
+   
+   // Aktuelle Sendung
+
+   Text debug=pstarttime,text={presentStartTime/%H:%M},x=5,y=85,width=165,height=65,size=42,color={lightColor};
+   Text debug=premaining,text={presentRemaining}',x=175,y=105,width=85,height=45,size=26,delay=60,color={lightColor};
+
+   Text debug=ptitle,text={presentTitle},id=pTitle,x=260,y=82,width=800,height=295,size=42,color={titleColor},on_click=Schedule Info;
+   Text debug=psubtitel,text={presentSubtitle},id=pSubTitle,x=260,y=82+{pTitle.height},height=295-{pTitle.height},color={subtitleColor},width=800,size=32;
+   Text debug=pdescription,text={presentDescription},id=pDesc,x=260,y=82+{pTitle.height}+{pSubTitle.height},
+         height=295-{pTitle.height}-{pSubTitle.height},color={descriptionColor},width=800,size=26,dots=yes;
+
+   // EPG Bild 
+
+   Image debug=pepgimage,x=15,y=155,width=230,height=200,
+     path={varEPGimagesPath_1}{presentID}_(0-9).jpg:
+       {varEPGimagesPath_2}{presentID}.png,
+       fit=yes,aspect_ratio=yes,delay=5;
+ 
+   // Kommende Sendung
+
+   Text debug=fstarttime,text={followingStartTime/%H:%M},x=5,y=390,width=165,height=65,size=42,color={lightColor};
+   Text debug=fduration,text={followingDuration}',x=175,y=410,width=85,height=45,size=26,color={lightColor};
+
+   Text debug=ftitle,text={followingTitle},id=fTitle,x=260,y=385,width=800,height=295,size=42,color={titleColor},on_click=Schedule Yellow Yellow Info;
+   Text debug=sdubtitle,text={followingSubtitle},id=fSubTitle,x=260,y=385+{fTitle.height},height=295-{fTitle.height},width=800,size=32,color={subtitleColor};
+   Text debug=fdescription,text={followingDescription},id=fDesc,x=260,y=385+{fTitle.height}+{fSubTitle.height},
+         height=295-{fTitle.height}-{fSubTitle.height},color={descriptionColor},width=800,size=26,dots=yes;
+
+   // EPG Bild   
+
+   Image debug=fepgimage,x=15,y=460,width=230,height=200,
+     path={varEPGimagesPath_1}{followingID}_(0-9).jpg:
+     {varEPGimagesPath_2}{followingID}.png,
+     fit=yes,aspect_ratio=yes,delay=5; 
+
+   // Iconleiste
+
+   Image debug=iconbar,x=5,y=678,width=1060,height=90,fit=yes,aspect_ratio=no,path={backgrounds}/channelsymbols.png; 
+
+   // Signal Quality
+
+   Text debug=strtext,text=STR,x=18,y=700,width=40,height=22,size=14,color={lightColor},overlay=yes; 
+   Progressbar debug=strbar,total=100,value={STR/%},x=73,y=705,path={symbols}/progress.png,width=290,height=12,bg_x=68,bg_y=702,
+      bg_height=18,bg_width=298,bg_color=0:0:0:255;
+ 
+   Text debug=snrtext,text=SNR,x=18,y=727,width=40,height=22,size=14,color={lightColor},overlay=yes;
+   Progressbar debug=snrbar,total=100,value={SNR/%},x=73,y=733,path={symbols}/progress.png,width=290,height=12,bg_x=68,bg_y=730,
+      bg_height=18,bg_width=298,bg_color=0:0:0:255;
+
+   // Status Icons  
+
+   Image debug=HasVtx,condition={channelHasVtx} = 0,x=391,y=688,width=75,height=70,path={symbols}/vtxOff.png,fit=yes,overlay=yes;
+   Image debug=HasVtx,condition={channelHasVtx},x=391,y=688,width=75,height=70,path={symbols}/vtxOn.png,fit=yes,overlay=yes;
+   Image debug=HasDD,condition={channelHasDD} = 0, x=487,y=688,width=75,height=70,path={symbols}/ddOff.png,on_click=Audio,fit=yes,overlay=yes;
+   Image debug=HasDD,condition={channelHasDD},x=487,y=688,width=75,height=70,path={symbols}/ddOn.png,on_click=Audio,fit=yes,overlay=yes;
+   Image debug=HasDD,condition={channelHasDD} = 0, x=583,y=688,width=75,height=70,path={symbols}/ch2On.png,on_click=Audio,fit=yes,overlay=yes;
+   Image debug=HasDD,condition={channelHasDD},x=583,y=688,width=75,height=70,path={symbols}/ch2Off.png,on_click=Audio,fit=yes,overlay=yes;
+   Image debug=HasMultilang,condition={channelHasMultilang} = 0, x=679,y=688,width=75,height=70,path={symbols}/multilangOff.png,on_click=Audio,fit=yes,overlay=yes;
+   Image debug=HasMultilang,condition={channelHasMultilang},x=679,y=688,width=75,height=70,path={symbols}/multilangOn.png,on_click=Audio,fit=yes,overlay=yes;
+   Image debug=IsEncrypted,condition={channelIsEncrypted} = 0,x=775,y=688,width=75,height=70,path={symbols}/cryptOff.png,fit=yes,overlay=yes;
+   Image debug=IsEncrypted,condition={channelIsEncrypted} = 1,x=775,y=688,width=75,height=70,path={symbols}/cryptOn.png,fit=yes,overlay=yes;
+   Image debug=actRecordingCount,condition={actRecordingCount} = 0, x=871,y=688,width=75,height=70,path={symbols}/recOff.png,fit=yes,overlay=yes;
+   Image debug=actRecordingCount,condition={actRecordingCount} > 0,x=871,y=688,width=75,height=70,path={symbols}/rec_On.png,fit=yes,overlay=yes;
+   Image debug=videoSizeHeight,condition={videoSizeHeight} < 719,x=967,y=688,width=75,height=70,path={symbols}/sd576i.png,fit=yes,overlay=yes;
+   Image debug=videoSizeHeight,condition={videoSizeHeight} >= 719 & {videoSizeHeight} < 1080,x=967,y=688,width=75,height=70,path={symbols}/hd720p.png,fit=yes,overlay=yes;
+   Image debug=videoSizeHeight,condition={videoSizeHeight} >= 1080,x=967,y=688,width=75,height=70,path={symbols}/hd1080i.png,fit=yes,overlay=yes;
+
+   // running timer
+
+   TextList debug=runningTimer1,condition={actTimersRunning} = 1,id=rList,text={actTimersStart/%a %H:%M}  -  {actTimersStop/ %H:%M}@{actTimersTitle},lines=2,
+       x=1076,y=397,height=264,width=275, size=20,color={signalColor},path=backgrounds/listbg.png;
+
+   // pending timer
+
+   TextList debug=runningTimer2,condition={actTimersRunning} = 0,id=pList,text={actTimersStart/%a %H:%M}  -  {actTimersStop/ %H:%M}@{actTimersTitle},lines=2,
+       x=1076,y={rList.Height}+397,height=264-{rList.Height},width=275,size=20,overlay=yes;
+
+   // Datum/Uhr unten rechts
+
+   Text debug=date,text={time/%H:%M},x=1177,y=661,size=42,color={tdMainColor},align=left,width=165,height=60;
+   Text debug=timer,text={time/%a %d.%m},x=1180,y=724,size=26,color={tdMainColor},align=left,width=165,height=38;
+
+   // Separator
+
+   Rectangle debug=seperator,x=0,y=377,width=1060,height=4,color={boxColor};
+   
+   Include=Volume;
+   Include=OSDMessage;
+
+//***************************************************************************
+// Non Live Tv
+//***************************************************************************
+
+[NormalNonLiveTv]
+
+   Background path={backgrounds}/bg-menu-epg-info.png;
+   Defaults font=graphTFT,size=40,color={textColor},bg_red=0,bg_green=0,bg_blue=0,bg_alpha=0;
+   
+   // Titel
+
+   Text text=Timers,x=10,y=0,height=50,size=34,color={lightColor};
+        
+   // Running Timer
+
+   Image x=0,y=60,width=1355,height=70,fit=yes,aspect_ratio=no,path={backgrounds}/channelsymbols.png;     
+
+   Text text=Running,x=1,y=66,height=40,size=32,color={lightColor},align=center;
+
+   TextList condition={actTimersRunning} = 1,id=rList,text={actTimersStart/%a %H:%M}  - {actTimersStop/ %H:%M}   {actTimersTitle},
+         x=15,y=138,height=768 - 138 - 62 -5,width=1340,size=26,color={signalColor};
+
+   // Pending Timer
+
+   Image x=0,y={rList.Height} + 138 + 10,width=1355,height=70,fit=yes,aspect_ratio=no,path={backgrounds}/channelsymbols.png;
+
+   Text text=Pending,x=1,y={rList.Height} + 138 + 15,height=41,size=32,color={lightColor},align=center;
+
+   TextList condition={actTimersRunning} = 0,id=pList,bg_color=0:0:0:0,text={actTimersStart/%a %H:%M}  - {actTimersStop/ %H:%M}   {actTimersTitle},
+         x=15,y={rList.Height}+138+10+70+5,height=768-{rList.Height}-220-10-62-5,width=1340,size=26,color={textColor};
+
+   // Datum/Uhr unten rechts
+
+   Text text={time/%a %d.%m}   {time/%H:%M}  ,x=5,y=706,width=1350,size=40,color={tdColor},align=right;
+
+   // Aufnahmesymbol
+
+   Image condition={actRecordingCount} > 0, x=5,y=705,path={symbols}/rec_On.png,permanent=no,delay=5;
+
+   Include=Volume;
+   Include=OSDMessage;
+
+//***************************************************************************
+// TV
+//***************************************************************************
+
+[NormalTV]
+
+   Include=TV_Radio_Common;
+
+//***************************************************************************
+// Radio
+//***************************************************************************
+
+[NormalRadio]
+
+   Include=TV_Radio_Common;
+
+//***************************************************************************
+// TV
+//***************************************************************************
+
+[NormalTV2]
+
+   Background path=backgrounds/bg-tv.png;
+   Defaults font=graphTFT,size=24,color={textColor},bg_color=20:110:220:0;
+
+   // Kanalnummer Kanalnamen oben
+
+   Text debug=channelname_number,condition="{channelGroup}" = "",x=5,y=0,text={presentChannelNumber}  {presentChannelName},size=40,align=left,width=1050,
+      height=60,color={menuTitleColor},on_click=Schedule Yellow;
+
+   Text debug=channelname_number,condition="{channelGroup}" != "",x=5,y=0,text={channelGroup},size=40,align=left,width=1050,
+      height=60,color={descriptionColor},on_click=Schedule Yellow;
+
+   // Timebar oben
+
+   Timebar x=6,y=66,width=1049,height=14,path={symbols}/progress.png,
+       bg_x=2,bg_y=64,bg_height=18,bg_width=1056,bg_color=105:105:105:255; 
+
+   // Senderlogo Logo oben rechts
+
+   Image debug=channellogo,x=1152,y=0,width=190,height=115,bg_x=1140,bg_y=2,bg_width=205,bg_height=120,fit=yes,aspect_ratio=no,
+       path={chanLogos}/{presentChannelName/lower}.png,path2=symbols/channellogoback.png,on_click=Schedule;
+   
+   // Aktuelle Sendung
+
+   Text debug=pstarttime,text={presentStartTime/%H:%M},x=5,y=85,width=165,height=65,size=42,color={lightColor};
+   Text debug=premaining,text={presentRemaining}',x=175,y=105,width=85,height=45,size=26,delay=60,color={lightColor};
+
+   Text debug=ptitle,text={presentTitle},id=pTitle,x=260,y=82,width=800,height=295,size=42,color={titleColor},on_click=Schedule Info;
+   Text debug=psubtitel,text={presentSubtitle},id=pSubTitle,x=260,y=82+{pTitle.height},height=295-{pTitle.height},color={subtitleColor},width=800,size=32;
+   Text debug=pdescription,text={presentDescription},id=pDesc,x=260,y=82+{pTitle.height}+{pSubTitle.height},
+         height=295-{pTitle.height}-{pSubTitle.height},color={descriptionColor},width=800,size=26,dots=yes;
+
+   // EPG Bild 
+
+   Image debug=pepgimage,x=15,y=155,width=230,height=200,
+     path={varEPGimagesPath_1}{presentID}_(0-9).jpg:
+       {varEPGimagesPath_2}{presentID}.png,
+       fit=yes,aspect_ratio=yes,delay=5;
+ 
+   // Banner
+
+   Image debug=pepgimage,x=15,y=380,width=1300,height=290,
+     path={presentBanner},fit=yes,aspect_ratio=yes; 
+
+   // Iconleiste
+
+   Image debug=iconbar,x=5,y=678,width=1060,height=90,fit=yes,aspect_ratio=no,path={backgrounds}/channelsymbols.png; 
+
+   // Signal Quality
+
+   Text debug=strtext,text=STR,x=18,y=700,width=40,height=22,size=14,color={lightColor},overlay=yes; 
+   Progressbar debug=strbar,total=100,value={STR/%},x=73,y=705,path={symbols}/progress.png,width=290,height=12,bg_x=68,bg_y=702,
+      bg_height=18,bg_width=298,bg_color=0:0:0:255;
+ 
+   Text debug=snrtext,text=SNR,x=18,y=727,width=40,height=22,size=14,color={lightColor},overlay=yes;
+   Progressbar debug=snrbar,total=100,value={SNR/%},x=73,y=733,path={symbols}/progress.png,width=290,height=12,bg_x=68,bg_y=730,
+      bg_height=18,bg_width=298,bg_color=0:0:0:255;
+
+   // Status Icons  
+
+   Image debug=HasVtx,condition={channelHasVtx} = 0,x=391,y=688,width=75,height=70,path={symbols}/vtxOff.png,fit=yes,overlay=yes;
+   Image debug=HasVtx,condition={channelHasVtx},x=391,y=688,width=75,height=70,path={symbols}/vtxOn.png,fit=yes,overlay=yes;
+   Image debug=HasDD,condition={channelHasDD} = 0, x=487,y=688,width=75,height=70,path={symbols}/ddOff.png,on_click=Audio,fit=yes,overlay=yes;
+   Image debug=HasDD,condition={channelHasDD},x=487,y=688,width=75,height=70,path={symbols}/ddOn.png,on_click=Audio,fit=yes,overlay=yes;
+   Image debug=HasDD,condition={channelHasDD} = 0, x=583,y=688,width=75,height=70,path={symbols}/ch2On.png,on_click=Audio,fit=yes,overlay=yes;
+   Image debug=HasDD,condition={channelHasDD},x=583,y=688,width=75,height=70,path={symbols}/ch2Off.png,on_click=Audio,fit=yes,overlay=yes;
+   Image debug=HasMultilang,condition={channelHasMultilang} = 0, x=679,y=688,width=75,height=70,path={symbols}/multilangOff.png,on_click=Audio,fit=yes,overlay=yes;
+   Image debug=HasMultilang,condition={channelHasMultilang},x=679,y=688,width=75,height=70,path={symbols}/multilangOn.png,on_click=Audio,fit=yes,overlay=yes;
+   Image debug=IsEncrypted,condition={channelIsEncrypted} = 0,x=775,y=688,width=75,height=70,path={symbols}/cryptOff.png,fit=yes,overlay=yes;
+   Image debug=IsEncrypted,condition={channelIsEncrypted} = 1,x=775,y=688,width=75,height=70,path={symbols}/cryptOn.png,fit=yes,overlay=yes;
+   Image debug=actRecordingCount,condition={actRecordingCount} = 0, x=871,y=688,width=75,height=70,path={symbols}/recOff.png,fit=yes,overlay=yes;
+   Image debug=actRecordingCount,condition={actRecordingCount} > 0,x=871,y=688,width=75,height=70,path={symbols}/rec_On.png,fit=yes,overlay=yes;
+   Image debug=videoSizeHeight,condition={videoSizeHeight} < 719,x=967,y=688,width=75,height=70,path={symbols}/sd576i.png,fit=yes,overlay=yes;
+   Image debug=videoSizeHeight,condition={videoSizeHeight} >= 719 & {videoSizeHeight} < 1080,x=967,y=688,width=75,height=70,path={symbols}/hd720p.png,fit=yes,overlay=yes;
+   Image debug=videoSizeHeight,condition={videoSizeHeight} >= 1080,x=967,y=688,width=75,height=70,path={symbols}/hd1080i.png,fit=yes,overlay=yes;
+
+   // Datum/Uhr unten rechts
+
+   Text debug=date,text={time/%H:%M},x=1177,y=661,size=42,color={tdMainColor},align=left,width=165,height=60;
+   Text debug=timer,text={time/%a %d.%m},x=1180,y=724,size=26,color={tdMainColor},align=left,width=165,height=38;
+
+   // Separator
+
+   Rectangle debug=seperator,x=0,y=377,width=1060,height=4,color={boxColor};
+   
+   Include=Volume;
+   Include=OSDMessage;
+
+//***************************************************************************
+// Normal Replay
+//***************************************************************************
+
+[ReplayNormal]
+
+   Background path=backgrounds/bg-replay.png;
+
+   Defaults font=graphTFT,size=40,color={textColor},bg_red=0,bg_green=0,bg_blue=0,bg_alpha=0;
+   
+#ifdef WEATHER
+   VariableFile name=p4,file=/tmp/p4.txt,delay=10;
+   Text text=Aussen {w.varTime/%d. %b %H:%M},color={lightColor},size=18,x=1076,y=270,width=300,height=30,delay=10;
+   Text text={w.varTempKombiValue}°C / {w.varHumKombiValue}%,color={lightColor},size=28,x=1076,width=280,height=40,delay=10;
+   Text text={w.varWindKombiValue} m/s,color={lightColor},size=28,x=1076,width=275,height=40,delay=10;
+#endif
+
+#ifdef P4
+   VariableFile name=w,file=/tmp/weather.txt,delay=10;
+   Text text=Heizung,size=18,x=1076,color={lightColor},width=120,height=30,delay=10;
+   Text text={p4.varPuffertemperaturunten_0x78Value}°C / {p4.varPuffertemperaturoben_0x76Value}°C,color={lightColor},size=28,x=1076,width=300,height=40,delay=10;
+   Text text={p4.varStatusText},color={lightColor},size=28,height=40,x=1076,width=350,delay=10;
+#endif
+
+   // Mode symbol 
+
+   Image condition={replayForward} = 1 & {replaySpeed} = -1 & {replayPlay} = 1,x=1220,y=590,width=62,height=62,fit=yes,path={symbols}/play.png;  // play
+   Image condition={replayForward} = 1 & {replaySpeed} = -1 & {replayPlay} < 1,x=1220,y=590,width=62,height=62,fit=yes,path={symbols}/pause.png; // pause
+   Image condition={replayForward} = 0 & {replaySpeed} > 0  & {replayPlay} = 1,x=1220,y=590,width=62,height=62,fit=yes,path={symbols}/frew.png;  // Fast Rewind
+   Image condition={replayForward} = 1 & {replaySpeed} > 0  & {replayPlay} = 1,x=1220,y=590,width=62,height=62,fit=yes,path={symbols}/ffwd.png;  // Fast Forward
+   Image condition={replayForward} = 0 & {replaySpeed} > 0  & {replayPlay} < 1,x=1220,y=590,width=62,height=62,fit=yes,path={symbols}/srew.png;  // Slow Rewind
+   Image condition={replayForward} = 1 & {replaySpeed} > 0  & {replayPlay} < 1,x=1220,y=590,width=62,height=62,fit=yes,path={symbols}/sfwd.png;  // Slow Forward
+
+   // Ausgabe recording info
+
+   Text text={replayTitle},id=rTitle,x=10,y=5,size=40,width=1000,height=690,color={lightColor};
+   Text text={replaySubtitle},id=rSubTitle,x=10,width=1000,y=5+{rTitle.height},height=690-{rTitle.height},size=30;
+
+   var varStartLine = 0;
+   Text text={replayDescription},start_line={varStartLine},size=22,whipe_res=20,on_up=varStartLine--,on_down=varStartLine++,
+       x=10,width=1020,y=5+{rTitle.height}+{rSubTitle.height},height=690-{rTitle.height}-{rSubTitle.height},color={descriptionColor},dots=yes;
+
+   // Event. Bild ausgeben.
+
+   Image x=1045,y=10,width=300,height=250,
+      path={replayPath}/thumbnail_(0-9).jpg
+        :{replayPath}/{replayEventId}_(0-9).jpg,
+      fit=yes,delay=5,aspect_ratio=yes;
+
+   // Datum/Uhr unten rechts
+
+   Text text={time/%H:%M},x=1177,y=661,size=42,color={tdMainColor},align=left,width=165,height=60;
+   Text text={time/%a %d.%m},x=1180,y=724,size=26,color={tdMainColor},align=left,width=165,height=38;
+
+   // Laufzeiten links und rechts unten & Vortschrittbalken
+
+   Text text={replayCurrent/%k:%M:%S},x=5,y=710,color={lightColor},width=190,size=32,height=55,align=left,delay=1;
+   Text text={replayTotal/%k:%M:%S},x=805,y=710,color={lightColor},width=190,size=32,height=55,align=right;
+
+   // Progressbar
+
+   Progressbar total={replayTotal/%s},value={replayCurrent/%s},x=200,y=725,width=600,height=22,
+      path={symbols}/progress.png,bg_x=198,bg_y=721,bg_height=26,bg_width=602,
+      bg_color=105:105:105:255;
+
+   Include=Volume;
+   Include=OSDMessage; 
+
+//***************************************************************************
+// Menu Common
+//***************************************************************************
+
+[MenuCommon]
+
+   Defaults font=graphTFT,size=32,color={unselColor},bg_alpha=0;
+   
+   // Menü Titel
+
+   Text text={menuTitle},x=100,y=10,width=650,size=42,height=83,lines=1,align=left,dots=yes,on_click=Ok;
+
+   // Datum/Uhr oben rechts
+
+//   Text text={time/%a %d.%m - %H:%M},x=750,y=15,color={tdColor},size=32,align=right,width=600,align=right,height=40;
+   Text text={time/%a %d.%m - %H:%M},x=750, y=2,color={tdColor},        align=right,width=600,align=right,height=40;
+   
+   Include=ColorButtons;
+   Include=OSDMessage;
+
+[ColorButtons]
+
+   MenuButtonBackgroundRed x=25,y=710,width=300,height=50,pathON={symbols}/button-red.png,fit=yes,on_click=Red;
+   MenuButtonRed x=25,y=717,width=300,size=24,height=25,red=200,green=200,blue=200,alpha=255,align=center;
+   MenuButtonBackgroundGreen x=361,y=710,width=300,height=50,pathON={symbols}/button-green.png,fit=yes,on_click=Green;
+   MenuButtonGreen x=361,y=717,width=300,size=24,height=25,red=200,green=200,blue=200,alpha=255,align=center;
+   MenuButtonBackgroundYellow x=698,y=710,width=300,height=50,pathON={symbols}/button-yellow.png,fit=yes,on_click=Yellow;
+   MenuButtonYellow x=698,y=717,width=300,size=24,height=25,red=200,green=200,blue=200,alpha=255,align=center;
+   MenuButtonBackgroundBlue x=1035,y=710,width=300,height=50,pathON={symbols}/button-blue.png,fit=yes,on_click=Blue;
+   MenuButtonBlue x=1035,y=717,width=300,size=24,height=25,red=200,green=200,blue=200,alpha=255,align=center;
+
+[ImageMap]
+   
+   MenuImageMap file=menulogos/epgsearch.png,name=Programm;
+   MenuImageMap file=menulogos/chanman.png,name=Kanäle;
+   MenuImageMap file=menulogos/timers.png,name=Timer;
+   MenuImageMap file=menulogos/extrecmenu.png,name=Video;
+   MenuImageMap file=menulogos/cdplayer.png,name=Audio;
+   MenuImageMap file=menulogos/audio.png,name=Squeezebox;
+   MenuImageMap file=menulogos/screenshot.png,name=Bildschirmfoto;
+   MenuImageMap file=menulogos/lcdproc.png,name=Applikationen;
+   MenuImageMap file=menulogos/systeminfo.png,name=System;
+   MenuImageMap file=menulogos/tvm2vdr.png,name=epg handler;
+   MenuImageMap file=menulogos/graphtft.png,name=Graph-TFTng;
+   MenuImageMap file=menulogos/seduatmo.png,name=Seduatmo;
+   MenuImageMap file=menulogos/remote.png,name=ZapPilot;
+   MenuImageMap file=menulogos/fritzbox.png,name=Fritz!Box;
+   MenuImageMap file=menulogos/tvguide.png,name=Tvguide;
+   MenuImageMap file=menulogos/extrecmenu.png,name=Aufzeichnungen;
+   MenuImageMap file=menulogos/markad.png,name=markad Status;
+   MenuImageMap file=menulogos/cdplayer.png,name=Musicplayer HD;
+   MenuImageMap file=menulogos/radio.png,name=Zeige RDS-Radiotext;
+   MenuImageMap file=menulogos/imonlcd.png,name=PIP;
+   MenuImageMap file=menulogos/iptv.png,name=Web;
+   MenuImageMap file=menulogos/cdplayer.png,name=Medien;
+   MenuImageMap file=menulogos/avahi4vdr.png,name=Spiele;
+   MenuImageMap file=menulogos/systeminfo.png,name=Dienstprogramme;
+   MenuImageMap file=menulogos/epgsync.png,name=Befehle;
+   MenuImageMap file=menulogos/systeminfo.png,name=Einstellungen;
+   MenuImageMap file=menulogos/targavfd.png,name=Vorläufig auf den zweiten Bildschirm schalten;
+   MenuImageMap file=menulogos/femon.png,name=Signalinformationen;
+   MenuImageMap file=menulogos/systeminfo.png,name=Systeminformationen;
+   MenuImageMap file=menulogos/block.png,name=Childlock;
+   MenuImageMap file=menulogos/sleeptimer.png,name=Remote wakeup;
+
+//***************************************************************************
+// EPG Menu Common Part
+//***************************************************************************
+
+[MenuCommonEpg]
+
+   Defaults font=graphTFT,size=30,color={unselColor},bg_alpha=0;
+   
+   // Menüname oben links
+
+   Text text={menuTitle},x=100,y=2,width=650,height=50,lines=1,align=left,dots=yes,on_click=Ok;
+
+   // Datum/Uhr oben rechts
+
+   Text text={time/%a %d.%m - %H:%M},x=750,y=2,color={tdColor},align=right,width=600,align=right,height=40;
+   
+   Include=ColorButtons;
+   Include=OSDMessage;
+
+//***************************************************************************
+// Menu
+//***************************************************************************
+
+[MenuMain]
+   
+   Include=ImageMap;
+
+   Background path={backgrounds}/bg-menu.png;   
+
+   Defaults menu_y=110,menu_height=590,height=80,font=graphTFT,size=42,color={unselColor},bg_alpha=0;
+
+   // Menü Titel
+
+   Image x=2,y=2,height=95,width=100,fit=yes,path=menulogos/logo_vdr.png;
+   Text text={menuTitle} {vdrVersion},x=130,y=10,width=1200,height=83,lines=1,align=left,dots=yes,on_click=Ok;
+
+   // Datum/Uhr oben rechts
+
+   Text text={time/%a %d.%m - %H:%M},x=750,y=15,color={tdColor},size=32,align=right,width=600,align=right,height=40;
+
+   // Menü
+
+   ColumnSelected number=0,x=5,type=image,width=1350,bar_height=95%,fit=yes,path={menuBackground}/menuSelected_0.png;
+   Column         number=0,x=5,type=image,width=1350,bar_height=95%,fit=yes,path={menuBackground}/menuUnselected_0.png;
+
+   ColumnSelected number=1,x=15,type=image,width=75,bar_height=90%,fit=yes,path={imageMap},spacing=10;
+   Column         number=1,x=15,type=image,width=75,bar_height=90%,fit=yes,path={imageMap},spacing=10;
+
+   ColumnSelected number=1,type=text,color={selColor};
+   Column         number=1,type=text;
+
+   Include=ColorButtons;
+   Include=OSDMessage;
+
+//***************************************************************************
+// Menu
+//***************************************************************************
+
+[Menu]
+
+   Background path={backgrounds}/bg-menu.png;
+   
+   Include=MenuCommon;
+   Include=ImageMap;
+
+   Defaults menu_y=110,menu_height=590,font=graphTFT,size=34,color={unselColor},bg_alpha=0;
+
+   ColumnSelected number=0,x=5,type=image,width=1350,bar_height=90%,fit=yes,path={menuBackground}/menuSelected.png;
+   Column         number=0,x=5,type=image,width=1350,bar_height=90%,fit=yes,path={menuBackground}/menuUnselected.png;
+   
+   // Menülogos auf fester Position
+
+   MenuSelected x=10,y=110,width=1300,height=590,color={selColor},
+         stat_pic=yes,stat_y=2,stat_x=2,stat_width=70,stat_height=70;
+   Menu         x=10,y=110,width=1280,height=590;
+
+//***************************************************************************
+// Plugin Setup
+//***************************************************************************
+
+[MenuPluginSetup]
+
+   Background path={backgrounds}/bg-menu.png;
+   Include=MenuCommon;
+   Defaults menu_y=110,menu_height=590,font=graphTFT,size=34,color={unselColor},bg_alpha=0;
+
+   PartingLine x=10,align=center,width=1340,color={ptLineColor},fit=yes,path={menuBackground}/menuUnselected.png; 
+
+   ColumnSelected number=0,x=5,type=image,width=1350,bar_height=90%,fit=yes,path={menuBackground}/menuSelected.png;
+   Column         number=0,x=5,type=image,width=1350,bar_height=90%,fit=yes,path={menuBackground}/menuUnselected.png;
+  
+   ColumnSelected number=1,x=10,width=780,color={selColor};
+   Column         number=1,x=10,width=780;
+  
+   ColumnSelected number=2,color={selColor};
+   Column         number=2;
+   
+//***************************************************************************
+// Plugin Setup Page
+//***************************************************************************
+
+[MenuSetupPlugins]
+
+   Background path={backgrounds}/bg-menu.png;
+   Include=MenuCommon;
+   Defaults menu_y=110,menu_height=590,font=graphTFT,size=34,color={unselColor},bg_alpha=0;
+
+   PartingLine x=10,align=center,width=1340,color={ptLineColor},fit=yes,path={menuBackground}/menuUnselected.png; 
+
+   ColumnSelected number=0,x=5,type=image,width=1350,bar_height=90%,fit=yes,path={menuBackground}/menuSelected.png;
+   Column         number=0,x=5,type=image,width=1350,bar_height=90%,fit=yes,path={menuBackground}/menuUnselected.png;
+
+   ColumnSelected number=1,x=10,width=1350,color={selColor};
+   Column         number=1,x=10,width=1350;
+
+//***************************************************************************
+// Recordings Menu
+//***************************************************************************
+
+[MenuExtRecordings]
+
+   Background path={backgrounds}/bg-menu.png;
+
+   Include=MenuCommon;
+
+   Defaults menu_y=110,menu_height=590,font=graphTFT,size=32,color={unselColor},bg_alpha=0;
+
+   Image x=2,y=1,width=100,height=100,fit=yes,aspect_ratio=yes,path=menulogos/recordings.png;
+
+   ColumnSelected number=0,x=5,type=image,width=1350,bar_height=90%,fit=yes,path={menuBackground}/menuSelected.png;
+   Column         number=0,x=5,type=image,width=1350,bar_height=90%,fit=yes,path={menuBackground}/menuUnselected.png;
+
+   // symbol
+
+   ColumnSelected number=1,x=10,size=34,color={selColor},width=50,spacing=20;
+   Column         number=1,x=10,width=50,spacing=20;
+
+   //
+
+   ColumnSelected condition={colCount} = 3,number=2,size=34,color={selColor},width=210;
+   Column         condition={colCount} = 3,number=2,width=210;
+
+   ColumnSelected condition={colCount} = 3,number=3,size=34,color={selColor},width=180;
+   Column         condition={colCount} = 3,number=3,width=180;
+
+   // count/date
+
+   ColumnSelected condition={colCount} > 3,number=2,size=34,color={selColor},width=210,spacing=20,align=right;
+   Column         condition={colCount} > 3,number=2,width=210,spacing=20,align=right;
+
+   // name
+
+   ColumnSelected condition={colCount} > 3,number=6,size=34,color={selColor},width=1010,scroll=ticker,delay=500ms;
+   Column         condition={colCount} > 3,number=6,width=1050,dots=yes;
+   
+
+//***************************************************************************
+// Recording Menu
+//***************************************************************************
+
+[MenuExtRecording]
+
+   Background path={backgrounds}/bg-extrec.png;
+
+   Include=MenuCommon;
+   Defaults menu_y=110,menu_height=590,font=graphTFT,size=32,color={unselColor},bg_alpha=0;
+
+   // Output Detailed-Information
+
+   Image x=2,y=1,width=100,height=100,fit=yes,aspect_ratio=yes,path=menulogos/recordings.png;
+
+   Text text={recordingTime/%a  %d. %b %Y  %H:%M},id=rTime,x=10,y=105,size=22,width=1110,height=45;
+   Text text={recordingTitle},id=rTitle,x=10,y={rTime.y}+{rTime.height},size=36,width=1110,height=545;
+   Text text={recordingSubtitle},id=rSubtitle,x=10,y={rTitle.y}+{rTitle.height},size=30,width=1110,height=545-{rTitle.height};
+   
+   var varStartLine = 0;
+   Text text={recordingDescription},start_line={varStartLine},
+     whipe_res=20,on_up=varStartLine--,on_down=varStartLine++,color={descriptionColor},
+     x=10,y={rSubtitle.y}+{rSubtitle.height}+5,width=1340,
+     height=545-{rTitle.height}-{rSubtitle.height},size=20,dots=1;
+  
+   // EPG. Bild ausgeben.
+
+   Image x=1130,y=100,width=220,height=200,
+     path={recordingPath}/thumbnail_(0-9).jpg
+      :{recordingPath}/{replayEventId}_(0-9).jpg
+      :{symbols}/video.png,fit=yes,aspect_ratio=yes,delay=5;
+ 
+   Include=ColorButtons;
+
+//***************************************************************************
+// Recordings Menu
+//*************************************************************************** 
+
+[MenuRecordings]
+
+   Background path={backgrounds}/bg-menu.png;
+
+   Include=MenuCommon;
+
+   Defaults menu_y=110,menu_height=590,font=graphTFT,size=32,color={unselColor},bg_alpha=0;
+
+   Image x=2,y=1,width=100,height=100,fit=yes,aspect_ratio=yes,path=menulogos/recordings.png;
+
+   ColumnSelected number=0,x=5,type=image,width=1350,bar_height=90%,fit=yes,path={menuBackground}/menuSelected.png;
+   Column         number=0,x=5,type=image,width=1350,bar_height=90%,fit=yes,path={menuBackground}/menuUnselected.png;
+
+   // Count or Date
+
+   ColumnSelected number=1,x=10,size=34,color={selColor},width=220;
+   Column         number=1,x=10,width=220;
+
+   // Time
+
+   ColumnSelected condition={colCount} > 3,number=2,size=34,color={selColor},width=160;
+   Column         condition={colCount} > 3,number=2,width=160;
+
+   // unseen or duration
+
+   ColumnSelected number=3,size=34,color={selColor},width=160;
+   Column         number=3,width=160;
+
+   // name
+
+   ColumnSelected number=4,size=34,color={selColor},width=810,dots=yes;
+   Column         number=4,width=810,dots=yes;
+   
+//***************************************************************************
+// Menu Recording
+//*************************************************************************** 
+
+[MenuRecording]
+
+   Include=MenuExtRecording;
+
+//***************************************************************************
+// Channels
+//***************************************************************************
+
+[MenuChannels]
+
+   Background path={backgrounds}/bg-menu.png;
+
+   Include=MenuCommon;
+   Defaults menu_y=110,menu_height=590,font=graphTFT,size=32,color={unselColor},bg_alpha=0;
+
+   Image x=2,y=1,width=100,height=100,fit=yes,aspect_ratio=yes,path=menulogos/channels.png;
+
+   ColumnSelected number=0,x=5,type=image,width=1350,bar_height=90%,fit=yes,path={menuBackground}/menuSelected.png;
+   Column         number=0,x=5,type=image,width=1350,bar_height=90%,fit=yes,path={menuBackground}/menuUnselected.png;
+
+   ColumnSelected number=1,x=10,size=32,width=120,color={selColor};
+   Column         number=1,x=10,width=120;
+
+   ColumnSelected number=2,x=85,size=32,color={selColor},scroll=ticker,delay=500ms;
+   Column         number=2,x=75;
+   
+//***************************************************************************
+// Timers Menu
+//***************************************************************************
+
+[MenuTimers]
+
+   Background path={backgrounds}/bg-menu.png;
+
+   Include=MenuCommon;
+
+   Defaults menu_y=110,menu_height=590,font=graphTFT,size=32,color={unselColor},bg_alpha=0;
+
+   Image x=2,y=1,width=100,height=100,fit=yes,aspect_ratio=yes,path=menulogos/timers.png;
+
+   ColumnSelected number=0,x=5,type=image,width=1350,bar_height=90%,fit=yes,path={menuBackground}/menuSelected.png;
+   Column         number=0,x=5,type=image,width=1350,bar_height=90%,fit=yes,path={menuBackground}/menuUnselected.png;
+
+   // symbol
+
+   ColumnSelected number=1,x=10,size=34,color={selColor},width=40;
+   Column         number=1,x=10,width=40;
+
+   // vdr
+
+   ColumnSelected condition={colCount} = 7,number=2,size=34,color={selColor},width=140;
+   Column         condition={colCount} = 7,number=2,width=140;
+
+   // channel
+
+   ColumnSelected condition={colCount} = 6,number=2,size=34,color={selColor},width=90;
+   Column         condition={colCount} = 6,number=2,width=90;
+
+   ColumnSelected condition={colCount} = 7,number=3,size=34,color={selColor},width=90;
+   Column         condition={colCount} = 7,number=3,width=90;
+
+   // day
+
+   ColumnSelected condition={colCount} = 6,number=3,size=34,color={selColor},width=180;
+   Column         condition={colCount} = 6,number=3,width=180;
+
+   ColumnSelected condition={colCount} = 7,number=4,size=34,color={selColor},width=180;
+   Column         condition={colCount} = 7,number=4,width=180;
+
+   // time start
+
+   ColumnSelected condition={colCount} = 6,number=4size=34,color={selColor},width=150;
+   Column         condition={colCount} = 6,number=4,width=150;
+
+   ColumnSelected condition={colCount} = 7,number=5size=34,color={selColor},width=150;
+   Column         condition={colCount} = 7,number=5,width=150;
+
+   // time stop
+
+   ColumnSelected condition={colCount} = 6,number=5,size=34,color={selColor},width=150;
+   Column         condition={colCount} = 6,number=5,width=150;
+
+   // name
+
+   ColumnSelected condition={colCount} = 6,number=6,size=34,color={selColor},dots=yes;
+   Column         condition={colCount} = 6,number=6,dots=yes;
+
+   ColumnSelected condition={colCount} = 7,number=7,size=34,color={selColor},dots=yes;
+   Column         condition={colCount} = 7,number=7,dots=yes;
+
+//***************************************************************************
+// Invent Details
+//***************************************************************************
+
+[MenuEvent]
+
+   Background path={backgrounds}/bg-menu-epg-info.png;
+
+   Include=MenuCommonEpg;
+
+   Defaults menu_y=52,menu_height=645,font=graphTFT,size=32,color={unselColor},bg_alpha=0;
+
+   // Senderlogo Logo oben links
+
+   Image x=2,y=0,width=90,height=60,fit=yes,aspect_ratio=yes,path={chanLogos}/{eventChannelName/lower}.png;
+
+   // Title, Subtitle, Start und Endezeit
+
+   text text={EventTitle},id=eTitle,x=10,y=62,size=40,width=1120,height=210,color={lightColor};
+   text text={EventSubtitle},id=eSubTitle,x=10,y={eTitle.y}+{eTitle.height},width=1120,size=30,height=210-{eTitle.height},dots=yes;
+
+   text text={EventStartTime/%a %d.%m.%Y}   {EventStartTime/%H:%M} - {EventEndTime/%H:%M},id=eTime,x=10,
+      y={eSubTitle.y}+{eSubTitle.height},size=28,width=600,height=210-{eTitle.height}-{eSubTitle.height};
+
+   Text text=Progress: {eventElapsed}' / {eventDuration}',id=ePro,x=10,y={eTime.y}+{eTime.height},width=1120,
+         height=65,size=26;
+
+   Rectangle x=10,y={ePro.y}+{ePro.height}+5,
+             width=1340,height=4,color={boxColor};
+
+   // EPG Bild
+
+   Image x=1130,y=62,width=210,height=200,
+     path={varEPGimagesPath_1}{eventID}_(0-9).jpg:
+          {varEPGimagesPath_2}{eventID}.png,
+     fit=yes,delay=5,aspect_ratio=yes;
+
+   // EPG Detailinformationen
+
+   var varStartLine = 0;
+
+   text text={EventDescription},color={descriptionColor},x=10,
+      y=62+5+{eTitle.height}+{eSubTitle.height}+{eTime.height}+{ePro.height}+10,
+      size=24,width=1340,height=420,
+      start_line={varStartLine},whipe_res=20,on_up=varStartLine--,on_down=varStartLine++,
+      dots=1;
+
+//***************************************************************************
+// Right Area of EPG Menu
+//***************************************************************************
+
+[MenuEpgsRight]
+
+   Defaults menu_x=0,menu_y=70,menu_height=635,height=87,font=graphTFT,size=19,color={unselColor},bg_alpha=150;
+
+   // Titel / Subtitel des 'selected' rechts ausgeben
+
+   Text text={selectedRowEventTitle},id=eiTitle,x=437,y=60,width=690,height=635,size=35,color={lightColor},on_click=Ok;
+   Text text={selectedRowEventSubtitle},id=eiSubtitle,x=437,y={eiTitle.y}+{eiTitle.height},width=690,height=635-{eiTitle.height},
+         size=28,color={lightColor};
+
+   // description
+
+   var varStartLine = 0;
+
+   Text text={selectedRowEventDescription},id=eiDesc,start_line={varStartLine},color={descriptionColor},whipe_res=20,on_up=varStartLine--,on_down=varStartLine++,
+         x=437,y={eiSubtitle.y}+{eiSubtitle.height},width=910,height=635-{eiTitle.height}-{eiSubtitle.height}-5,size=24,align=left;
+   
+   // EPG Bild
+
+   Image x=1130,y=65,width=210,height=200,
+          path={varEPGimagesPath_1}{selectedRowEventID}_(0-9).jpg:
+               {varEPGimagesPath_2}{selectedRowEventID}.png,
+          fit=yes,aspect_ratio=yes;
+
+//***************************************************************************
+// Epgsearch - Laufendes Programm
+//***************************************************************************
+
+[MenuEpgsSchedule]
+
+   Background path={backgrounds}/bg-menu-epg.png;
+
+   Include=MenuCommonEpg;
+
+   Defaults menu_x=0,menu_y=70,menu_height=635,height=87,font=graphTFT,size=19,color={unselColor},bg_alpha=0;
+
+   // Menu Navigation Area
+
+   MenuNavigationArea y=110,x=0,width=425,on_dblclick=Ok;
+
+   // parting line
+
+   PartingLine x=2,width=423,bar_height=95%,fit=yes,size=34,color={ptLineColor},path={menuBackground}/menuUnselected_2.png,align=center,align_v=yes;
+
+   // Senderlogo Logo oben links
+
+   Image x=2,y=0,width=90,height=70,fit=yes,aspect_ratio=yes,path={chanLogos}/{rowEventChannelName/lower}.png;
+
+   // Image als Menü Hintergrund
+
+   EventColumnSelected type=image,x=2,bar_height=95%,width=423,fit=yes,path={menuBackground}/menuSelected_2.png,spacing=5;
+   EventColumn         type=image,x=2,bar_height=95%,width=423,fit=yes,path={menuBackground}/menuUnselected_2.png,width=1,spacing=5;
+
+   // Date
+
+   EventColumnSelected text={rowEventStartTime/%H:%M} - {rowEventEndTime/%H:%M},menu_y=74,x=8,width=420,lines=1,size=20,spacing=20,color={selColor};
+   EventColumn         text={rowEventStartTime/%H:%M} - {rowEventEndTime/%H:%M},menu_y=74,x=8,width=420,lines=1,spacing=20;
+
+   // Title
+
+   EventColumnSelected text={rowEventTitle},menu_y=99,x=8,width=420,size=20,spacing=10,lines=1,color={selColor},dots=yes;
+   EventColumn         text={rowEventTitle},menu_y=99,x=8,spacing=10,width=420,lines=1,dots=yes;
+
+   // Subtitle
+
+   EventColumnSelected text={rowEventSubtitle},menu_y=126,x=8,width=420,size=16,lines=1,color={selColor},dots=yes;
+   EventColumn         text={rowEventSubtitle},menu_y=126,x=8,width=420,size=16,width=410,lines=1,dots=yes; 
+
+   Include=MenuEpgsRight;
+
+//***************************************************************************
+// Laufendes Programm
+//***************************************************************************
+
+[MenuSchedule]
+
+   Include=MenuEpgsSchedule;
+
+//***************************************************************************
+// EpgSearch - Next
+//***************************************************************************
+
+[MenuEpgsWhatsOnElse]
+
+   Background path={backgrounds}/bg-menu-epg.png;
+
+   Include=MenuCommonEpg;
+
+   Defaults menu_y=70,menu_height=635,height=87,font=graphTFT,size=19,color={unselColor},bg_alpha=0;
+
+   // Menu Navigation Area
+
+   MenuNavigationArea y=110,x=0,width=425,on_dblclick=Ok;
+
+   // parting line
+
+   PartingLine x=2,width=423,bar_height=95%,fit=yes,size=34,color={ptLineColor},path={menuBackground}/menuUnselected_2.png,align=center,align_v=yes;
+
+   // EPG Logo oben links
+
+   Image x=10,y=2,width=60,height=60,fit=yes,aspect_ratio=yes,path=menulogos/schedule.png,on_click=Menu;
+   
+   // Image als Menü Hintergrund
+
+   EventColumnSelected type=image,x=2,width=423,bar_height=95%,fit=yes,color={selColor},path={menuBackground}/menuSelected_2.png;
+   EventColumn         type=image,x=2,width=423,bar_height=95%,fit=yes,path={menuBackground}/menuUnselected_2.png;
+
+   // Senderlogo
+
+   EventColumnSelected type=image,width=85,x=8,fit=yes,bar_height=95%,spacing=10,path={chanLogos}/{rowEventChannelname/lower}.png;
+   EventColumn         type=image,width=85,x=8,fit=yes,bar_height=95%,spacing=10,path={chanLogos}/{rowEventChannelname/lower}.png;
+
+   // Starttime - Endtime
+
+   EventColumnSelected text={rowEventStartTime/%H:%M} - {rowEventEndTime/%H:%M},lines=1,menu_y=74,x=102,width=200,size=21,color={selColor};
+   EventColumn         text={rowEventStartTime/%H:%M} - {rowEventEndTime/%H:%M},lines=1,menu_y=74,x=102,width=200;
+
+   // Title
+
+   EventColumnSelected text={rowEventTitle},menu_y=100,x=102,lines=1,size=20,width=308,color={selColor},dots=yes;
+   EventColumn         text={rowEventTitle},menu_y=100,x=102,lines=1,width=312,dots=1;
+
+   // Subtitle
+
+   EventColumnSelected text={rowEventSubtitle},menu_y=125,x=102,lines=1,width=308,size=16,lines=1,color={selColor},dots=yes;
+   EventColumn         text={rowEventSubtitle},menu_y=125,x=102,lines=1,width=312,size=16,lines=1,dots=yes;
+
+   Include=MenuEpgsRight;
+
+//**************************************************************************
+// EpgSearch - Now
+//***************************************************************************
+
+[MenuEpgsWhatsOnNow] 
+
+   Background path={backgrounds}/bg-menu-epg.png;
+
+   Include=MenuCommonEpg;
+
+   Defaults menu_y=70,menu_height=635,height=87,font=graphTFT,size=19,color={unselColor},bg_alpha=0;
+
+   // Menu Navigation Area
+
+   MenuNavigationArea y=110,x=0,width=425,on_dblclick=Ok;
+
+   // EPG Logo oben links
+
+   Image x=10,y=2,width=60,height=60,fit=yes,aspect_ratio=yes,path=menulogos/schedule.png,on_click=Menu;
+
+   // parting line
+
+   PartingLine x=2,width=423,bar_height=95%,menu_y=80,fit=yes,size=34,color={ptLineColor},path={menuBackground}/menuUnselected_2.png,align=center,align_v=yes;
+  
+   // Image als Menü Hintergrund
+
+   EventColumnSelected type=image,x=2,width=423,bar_height=95%,fit=yes,color={selColor},path={menuBackground}/menuSelected_2.png;
+   EventColumn         type=image,x=2,width=423,bar_height=95%,fit=yes,path={menuBackground}/menuUnselected_2.png;
+   
+   // Senderlogo
+
+   EventColumnSelected type=image,width=94,x=4,fit=yes,bar_height=97%,spacing=10,path={chanLogos}/{rowEventChannelname/lower}.png,aspect_ratio=yes;
+   EventColumn         type=image,width=94,x=4,fit=yes,bar_height=97%,spacing=10,path={chanLogos}/{rowEventChannelname/lower}.png,aspect_ratio=yes;
+
+   // Starttime - Endtime
+
+   EventColumnSelected text={rowEventStartTime/%H:%M} - {rowEventEndTime/%H:%M},menu_y=74,lines=1,x=102,width=200,size=21,color={selColor};
+   EventColumn         text={rowEventStartTime/%H:%M} - {rowEventEndTime/%H:%M},menu_y=74,lines=1,x=102,width=200;
+
+   // Title
+
+   EventColumnSelected text={rowEventTitle},menu_y=100,x=102,lines=1,size=20,width=308,color={selColor},dots=yes;
+   EventColumn         text={rowEventTitle},menu_y=100,x=102,lines=1,width=312,dots=yes;
+
+   // Progressbar
+  
+   EventColumnSelected type=progress,menu_y=95,x=102,width=317,bar_height=15%,path={symbols}/progress_grey.png;
+   EventColumn         type=progress,menu_y=95,x=102,width=317,bar_height=15%,path={symbols}/progress_grey.png;
+    
+   EventColumnSelected type=progress,menu_y=95,x=106,width=310,bar_height=10%,bg_x=106,bg_width=310,
+      bg_color=105:105:105:255,path={symbols}/progress.png;
+   EventColumn         type=progress,menu_y=95,x=106,width=310,bar_height=10%,bg_x=102,bg_width=310,
+      bg_color=105:105:105:255,path={symbols}/progress.png;
+  
+   Include=MenuEpgsRight;
+
+//***************************************************************************
+// 
+//***************************************************************************
+
+[MenuWhatsOnNow]
+
+   Include=MenuEpgsWhatsOnNow;
+
+[MenuEpgsFavorites]
+
+   Include=MenuEpgsWhatsOnElse;
+ 
+[MenuEpgsWhatsOnNext]
+
+   Include=MenuEpgsWhatsOnElse;
+
+[MenuWhatsOnNext]
+
+   Include=MenuEpgsWhatsOnElse;
+
+//***************************************************************************
+// Dial Show
+//***************************************************************************
+
+[NormalDia]
+
+  // Ausgabe eines Bildes oder, mittels Script, einer Bilderserie auf dem Display
+  // Diese Funktion wird über das graphTFT OSD-Menu oder "svdrpsend.pl plug graphtft VIEW Dia" aufgerufen
+
+   ImageFile x=0,y=0,width=1360,height=768,path=/tmp/dia.file,path2={symbols}/nocover.png,fit=yes,aspect_ratio=yes,rotate=1,delay=3;
+   Include=OSDMessage;
+
+#ifdef WEATHER
+
+//***************************************************************************
+// Daten der Wetterstation
+//***************************************************************************
+
+[NormalWeather]
+
+   Defaults font=graphTFT,size=40,color={lightColor},bg_red=0,bg_green=0,bg_blue=0,bg_alpha=255;
+
+   Text text={presentStartTime/%H:%M},x=0,y=0,width=160,height=65;
+   Text text={presentTitle},x=160,y=0,width=940,height=65,align=center,dots=yes;
+   Text text={time/%d. %H:%M},x=1100,y=0,align=right,width=260,height=65;
+
+   Image x=0,y=65,width=1360,height=702,fit=yes,path=/tmp/chg_wde1.jpg,delay=4;
+
+   Include=OSDMessage;
+
+#endif
+
+//***************************************************************************
+// Daten der P4 Heizung
+//***************************************************************************
+
+#ifdef P4
+
+[NormalP4]
+
+   Defaults font=graphTFT,size=40,color={lightColor},bg_red=0,bg_green=0,bg_blue=0,bg_alpha=255;
+
+   Text text={presentStartTime/%H:%M},x=0,y=0,width=160,height=65;
+   Text text={presentTitle},x=160,y=0,width=940,height=65,align=center,dots=yes;
+   Text text={time/%d. %H:%M},x=1100,y=0,align=right,width=260,height=65;
+
+   Image x=0,y=65,width=1360,height=702,fit=yes,path=/tmp/chg_p4.jpg;
+
+   Include=OSDMessage;
+
+[NormalP4Data]
+
+   Background path=p4/bg-p4.png;
+
+   Defaults font=graphTFT,size=20,height=30,red=0,green=0,blue=0,
+           bg_red=255,bg_green=255,bg_blue=255,bg_alpha=0;
+
+   VariableFile name=p4,file=/tmp/p4.txt,delay=10;
+
+   var varAussenTemp = 0;
+   var varPufferOben = 0;
+   var varPufferUnten = 0;
+   var varKesselTemp = 0;
+   var varAbgasTemp = 0;
+   var varPellets = 0;
+
+   // Kessel
+
+   Text text={p4.varAbgastemperatur_0x1Value} °C,x=20,y=240,width=120,on_click=varAbgasTemp:1:0;
+
+   Image x=146,y=335,width=20,height=20,path=p4/ID_10-on.gif;
+   Text text={p4.varSaugzugdrehzahl_0x7Value},x=20,y=325,width=120;
+   Text text=U/min,x=20,y=355,width=120,size=16;
+
+   Text text={p4.varStatusText},size=30,height=40,x=62,y=60,width=350;
+   Text condition={p4.varFehlerText} != "Kein Fehler",text={p4.varFehlerText} h,
+           size=30,height=40,color={signalColor},x=62,y=120,size=24,height=35,width=250;
+
+   Text text={p4.varKesselstellgre_0x12Value}%,x=120,y=440,width=120;
+   Text text={p4.varKesseltemperatur_0x0Value} °C,x=75,y=590,width=120,on_click=varKesselTemp:1:0;
+
+   Text text={p4.varBetriebsstunden_0x62Value} h,x=75,y=630,width=125;
+
+   // Pellet
+
+   Text text={p4.varFllstandimPelletsbehlter_0x71Value}%,x=240,y=360,width=130;
+   Progressbar total=100,value={p4.varFllstandimPelletsbehlter_0x71Value/%s},text=percent,x=220,y=350,
+                  red=255,green=255,blue=255,
+                  width=120,height=80,path=p4/p4-pellets.jpg,on_click=varPellets:1:0;
+
+   // Heizkreise
+
+   Image condition={p4.varHeizkreispumpe_0x0Value} = 1,x=675,y=241,width=20,height=20,path=p4/p4-pump-on.png;
+   Image condition={p4.varHeizkreispumpe_0x0Value} = 0,x=675,y=241,width=20,height=20,path=p4/p4-pump-off.png;
+   Text text={p4.varVorlaufIsttemperatur_0x15Value} °C,x=590,y=20,width=120;
+
+   Image condition={p4.varHeizkreispumpe_0x1Value} = 1,x=780,y=241,width=20,height=20,path=p4/p4-pump-on.png;
+   Image condition={p4.varHeizkreispumpe_0x1Value} = 0,x=780,y=241,width=20,height=20,path=p4/p4-pump-off.png;
+   Text text={p4.varVorlaufIsttemperatur_0x19Value} °C,x=910,y=20,width=120;
+
+   // Puffer
+
+   Text text={p4.varPuffertemperaturoben_0x76Value} °C,x=1125,y=230,width=120,on_click=varPufferOben:1:0;
+   Text text={p4.varPuffertemperaturunten_0x78Value} °C,x=1125,y=610,width=120,on_click=varPufferUnten:1:0;
+   Text text={p4.varPufferpumpenAnsteuerung_0x8cValue}%,x=620,y=590,width=110;
+   Image condition={p4.varPufferpumpenAnsteuerung_0x8cValue} > 0,x=625,y=620,width=20,height=20,path=p4/p4-pump-on.png;
+   Image condition={p4.varPufferpumpenAnsteuerung_0x8cValue} = 0,x=625,y=620,width=20,height=20,path=p4/p4-pump-off.png; 
+
+   // Aussen
+
+   Text text=Außen,x=1225,y=15,width=110,size=16;
+   Text text={p4.varAuentemperatur_0x4Value} °C,x=1225,y=40,width=110,on_click=varAussenTemp:1:0;
+
+   // Detail Charts
+
+   Image condition={varPufferOben},x=900,y=200,fit=yes,width=400,height=250,path=/tmp/chg_p4-pufferoben.jpg,on_click=varPufferOben:1:0;
+   Image condition={varKesselTemp},x=60,y=480,fit=yes,width=400,height=250,path=/tmp/chg_p4-abgastemp.jpg,on_click=varKesselTemp:1:0;
+   Image condition={varAbgasTemp},x=10,y=200,fit=yes,width=400,height=250,path=/tmp/chg_p4-abgastemp.jpg,on_click=varAbgasTemp:1:0;
+   Image condition={varPufferUnten},x=900,y=500,fit=yes,width=400,height=250,path=/tmp/chg_p4-pufferunten.jpg,on_click=varPufferUnten:1:0;
+   Image condition={varAussenTemp},x=800,y=15,fit=yes,width=400,height=250,path=/tmp/chg_p4-aussentemp.jpg,on_click=varAussenTemp:1:0;
+   Image condition={varPellets},x=200,y=300,fit=yes,width=400,height=250,path=/tmp/chg_p4-pellets.jpg,on_click=varPellets:1:0;
+
+   Text text=Akualisiert: {p4.varTime/%d.%m %H:%M},size=16,x=10,y=743,width=275,height=25;
+
+   Include=OSDMessage;
+
+#endif

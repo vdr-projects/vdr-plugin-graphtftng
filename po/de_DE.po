@@ -1,0 +1,176 @@
+# VDR plugin language source file.
+# Copyright (C) 2007 Klaus Schmidinger <kls@cadsoft.de>
+# This file is distributed under the same license as the VDR package.
+# Klaus Schmidinger <kls@cadsoft.de>, 2000
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: VDR 1.5.7\n"
+"Report-Msgid-Bugs-To: <vdr@jwendel.de>\n"
+"POT-Creation-Date: 2015-12-22 11:18+0100\n"
+"PO-Revision-Date: 2008-12-05 19:18+0100\n"
+"Last-Translator: Klaus Schmidinger <kls@cadsoft.de>\n"
+"Language-Team: <vdr@linuxtv.org>\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-15\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Can't save snapshot, missing event information"
+msgstr "Kann Snapdhot nicht speichern, es fehlen Event Informationen"
+
+msgid "Snapshot saved"
+msgstr "Snapshot gespeichert"
+
+msgid "Error saving snapshot"
+msgstr "Fehler beim Snapshot speichern"
+
+msgid "Reload themes"
+msgstr "Themes neu laden"
+
+msgid "Refresh Display"
+msgstr "Anzeige aktualisieren"
+
+msgid "Normal Display"
+msgstr "Standardanzeige"
+
+msgid "Snapshot"
+msgstr ""
+
+msgid "--- end of playlist ---"
+msgstr "--- Ende der Abspielliste ---"
+
+msgid "GraphTFT"
+msgstr "GraphTFT"
+
+msgid "Theme"
+msgstr "Aussehen"
+
+msgid "Hide Mainmenu Entry"
+msgstr "Hauptmenueintrag verstecken"
+
+msgid "VDR use iso charset"
+msgstr ""
+
+msgid "Spectrum Analyzer (music)"
+msgstr ""
+
+msgid "Dump Image"
+msgstr "Dump Bild"
+
+msgid "Dump image to '/tmp/graphtftng.png'"
+msgstr ""
+
+msgid "Dump every [sec]"
+msgstr ""
+
+msgid "Snapshot width"
+msgstr "Snapshot Breite"
+
+msgid "Snapshot height"
+msgstr "Snapshot Hoehe"
+
+msgid "Snapshot JPEG Quality"
+msgstr ""
+
+msgid "Snapshot path"
+msgstr "Snapshot Ablagepfad"
+
+msgid "FB/X Device"
+msgstr ""
+
+msgid "Width"
+msgstr "Breite"
+
+msgid "Height"
+msgstr "Hoehe"
+
+msgid "FB Device"
+msgstr ""
+
+msgid "Flip OSD"
+msgstr "Tausche OSD"
+
+msgid "X Offset"
+msgstr "X Koordinaten Abweichung"
+
+msgid "Y Offset"
+msgstr "Y Koordinaten Abweichung"
+
+msgid "Border to Width"
+msgstr "Rahmen zur Hoehe"
+
+msgid "Border to Height"
+msgstr "Rahmen zur Breite"
+
+msgid "TCP Connection"
+msgstr "TCP Verbindung"
+
+msgid "JPEG Quality"
+msgstr ""
+
+msgid "touch Device"
+msgstr ""
+
+msgid "Device"
+msgstr ""
+
+msgid "Log"
+msgstr ""
+
+msgid "Log Device"
+msgstr ""
+
+msgid "Log Level"
+msgstr ""
+
+msgid "Test"
+msgstr ""
+
+msgid "Stop"
+msgstr ""
+
+msgid "Calibrate"
+msgstr "Kalibrieren"
+
+msgid "Unknown title"
+msgstr "Unbekannter Title"
+
+msgid "No EPG data available."
+msgstr "Keine EPG Daten vorhanden."
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "Artist"
+msgstr "Künstler"
+
+#~ msgid "Dump Refresh"
+#~ msgstr "Dump alle [Sek] erneuern"
+
+#~ msgid "Dump image width"
+#~ msgstr "Dump Bild Breite"
+
+#~ msgid "Dump image height"
+#~ msgstr "Dump Bild Hoehe"
+
+#~ msgid "Snapshot Jpeg Quality"
+#~ msgstr "Snapshot JPEG Qualitaet"
+
+#~ msgid "Jpeg Quality"
+#~ msgstr "JPEG Qualitaet"
+
+#~ msgid "Convert Iso to UTF-8"
+#~ msgstr "Konvertiere ISO zu UTF-8"
+
+#~ msgid "Dump image to file"
+#~ msgstr "Dump Bild in Datei speichern"
+
+#~ msgid "Force redraw every [sec]"
+#~ msgstr "Erzwungenes Neuzeichnen alle [Sek]"
+
+#~ msgid "Use StillPicture"
+#~ msgstr "Benutze StillPicture"
+
+#~ msgid "Refresh"
+#~ msgstr "Aktualisieren"
