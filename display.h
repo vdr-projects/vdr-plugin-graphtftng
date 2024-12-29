@@ -22,11 +22,6 @@
 #include <vector>
 #include <algorithm>
 
-#include <vdr/tools.h>
-#include <vdr/thread.h>
-#include <vdr/status.h>
-#include <vdr/skins.h>
-
 #include <common.h>
 #include <comthread.h>
 #include <touchthread.h>
@@ -36,6 +31,11 @@
 #ifdef WITH_EPG2VDR
 #  include "../vdr-plugin-epg2vdr/service.h"
 #endif
+
+#include <vdr/tools.h>
+#include <vdr/thread.h>
+#include <vdr/status.h>
+#include <vdr/skins.h>
 
 using std::string;
 using std::vector;
@@ -125,7 +125,7 @@ class cEventCopy
             initialized = no;
             return;
          }
-            
+
          setEventID(event->EventID());
          setChannelID(event->ChannelID());
 

@@ -818,6 +818,7 @@ void cGraphTFTDisplay::updateTimers()
    _timers.sort();
 
    triggerTimerUpdate = no;
+
    updateGroup(groupRecording);
    broadcast();
 }
@@ -861,9 +862,6 @@ void cGraphTFTDisplay::updateChannel()
 
 void cGraphTFTDisplay::finalizeItemList()
 {
-   needLock = yes;
-   cMutexLock lock(&_mutex);
-
 #if defined (APIVERSNUM) && (APIVERSNUM >= 20301)
    const cChannels* channels = 0;
    const cRecordings* recordings = 0;
@@ -891,6 +889,8 @@ void cGraphTFTDisplay::finalizeItemList()
    cRecordings* recordings = &Recordings;
 #endif
 
+   cMutexLock lock(&_mutex);
+   needLock = yes;
    for (string::size_type i = 0; i < _menu.items.size(); i++)
    {
       if (!_menu.items[i].event.isEmpty())
@@ -1526,10 +1526,9 @@ void cGraphTFTDisplay::updateProgram()
 
    if (channel)
    {
-      tell(5, "updateProgram for channel '%s'", channel->Name());
-
-      needLock = yes;
+      tell(1, "updateProgram for channel '%s'", channel->Name());
       cMutexLock lock(&_mutex);
+      needLock = yes;
 
 //       const cEvent* present = _presentEvent;
 //       const cEvent* following = _followingEvent;

@@ -344,7 +344,7 @@ void cGraphTFTDisplay::OsdEventItem(const cEvent* Event, const char* Text,
    {
       tell(3, "OsdEventItem() Force update due to index/count (%d/%d)", Index, Count);
 
-      triggerFinalizeItemList = yes;
+  //    triggerFinalizeItemList = yes;
       updateGroup(groupMenu);
       broadcast();
    }

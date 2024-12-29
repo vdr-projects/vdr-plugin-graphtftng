@@ -626,7 +626,7 @@ int cDisplayItem::drawText(const char* text, int y,
    int lines = height / lineHeight > 0 ? height / lineHeight : 1;
 
    if (_lines > 0)
-      lines = min(lines, _lines);
+      lines = std::min(lines, _lines);
 
    int visibleWidth = width*lines;
 
@@ -727,7 +727,7 @@ int cDisplayItem::drawText(const char* text, int y,
       for (ps = 0; ps < blen; ps += cs)
       {
          i++;
-         cs = max(mblen(&text[ps], blen-ps), 1);
+         cs = std::max(mblen(&text[ps], blen-ps), 1);
 
          if (i >= marquee_idx)
             break;
@@ -1160,7 +1160,7 @@ int cDisplayText::draw()
    {
       neededLines = render->lineCount(p.c_str(), _font.c_str(), _size, width);
       lastHeight = neededLines * lineHeight;
-      lastHeight = min(lastHeight, Height());                    // respect configured max height
+      lastHeight = std::min(lastHeight, Height());                    // respect configured max height
    }
 
    tell(3, "Dimension of '%s' %d/%d now %d/%d; position is %d/%d, need %d lines [%d,%d,%d]",
@@ -1928,7 +1928,7 @@ int cDisplayMenu::draw()
    vdrStatus->_menu.lineHeightSelected = lineHeightSelect;
 
    if (vdrStatus->_menu.topRow < 0)
-      vdrStatus->_menu.topRow = max(0, vdrStatus->_menu.currentRow - count/2);   // initial
+      vdrStatus->_menu.topRow = std::max(0, vdrStatus->_menu.currentRow - count/2);   // initial
    else if (vdrStatus->_menu.currentRow == vdrStatus->_menu.topRow-1)
       vdrStatus->_menu.topRow = vdrStatus->_menu.currentRow;                     // up
    else if (vdrStatus->_menu.currentRow == vdrStatus->_menu.topRow+count)
@@ -1962,7 +1962,7 @@ int cDisplayMenu::draw()
 
    // loop over visible rows ...
 
-   for (int i = vdrStatus->_menu.topRow; i < min((int)vdrStatus->_menu.items.size(),
+   for (int i = vdrStatus->_menu.topRow; i < std::min((int)vdrStatus->_menu.items.size(),
          vdrStatus->_menu.topRow + count); ++i)
    {
       cDisplayItem* p = i == vdrStatus->_menu.currentRow ? selectedItem : this;
@@ -2103,7 +2103,7 @@ int cDisplayMenuColumn::draw()
    _menu->lineHeightSelected = lineHeightSelect;
 
    if (_menu->topRow < 0)
-      _menu->topRow = max(0, _menu->currentRow - count/2);     // initial
+      _menu->topRow = std::max(0, _menu->currentRow - count/2);     // initial
    else if (_menu->currentRow == _menu->topRow-1)
       _menu->topRow = _menu->currentRow;                       // up
    else if (_menu->currentRow == _menu->topRow+count)
@@ -2128,7 +2128,7 @@ int cDisplayMenuColumn::draw()
 
    // paint the visible rows for this column
 
-   for (int i = _menu->topRow; i < min((int)_menu->items.size(), _menu->topRow + count); ++i)
+   for (int i = _menu->topRow; i < std::min((int)_menu->items.size(), _menu->topRow + count); ++i)
    {
       cDisplayItem* p = this;
 
@@ -2362,7 +2362,7 @@ int cDisplayMenuEventColumn::draw()
    _menu->lineHeightSelected = lineHeightSelect;
 
    if (_menu->topRow < 0)
-      _menu->topRow = max(0, _menu->currentRow - count/2);     // initial
+      _menu->topRow = std::max(0, _menu->currentRow - count/2);     // initial
    else if (_menu->currentRow == _menu->topRow-1)
       _menu->topRow = _menu->currentRow;                       // up
    else if (_menu->currentRow == _menu->topRow+count)
@@ -2387,7 +2387,7 @@ int cDisplayMenuEventColumn::draw()
 
    // paint the visible rows for this column
 
-   for (int i = _menu->topRow; vdrStatus->_eventsReady && i < min((int)_menu->items.size(), _menu->topRow + count); ++i)
+   for (int i = _menu->topRow; vdrStatus->_eventsReady && i < std::min((int)_menu->items.size(), _menu->topRow + count); ++i)
    {
       if (i == na)
          tell(0, "XXXXXXXXXXXXXXXXXXXXXXXXX");
@@ -2492,7 +2492,7 @@ int cDisplayMenuEventColumn::draw()
          if (evaluate(text, p->Text().c_str()) != success)
                text = "";
 
-         tell(5, "draw '%s'", text.c_str());
+         tell(1, "--> draw '%s'", text.c_str());
 
          if (!p->Line())
             p->drawText(text.c_str(),

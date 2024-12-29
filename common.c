@@ -517,7 +517,7 @@ const char* Str::toCase(Case cs, char* str)
 
    for (int ps = 0; ps < lenSrc; ps += csSrc)
    {
-      csSrc = max(mblen(&s[ps], lenSrc-ps), 1);
+      csSrc = std::max(mblen(&s[ps], lenSrc-ps), 1);
       
       if (csSrc == 1)
          s[ps] = cs == cUpper ? toupper(s[ps]) : tolower(s[ps]);
@@ -697,7 +697,7 @@ int clen(const char* s)
    int len = 0;
    
    for (int bp = 0; bp < blen; bp += cs, len++)
-      cs = max(mblen(&s[bp], blen-bp), 1);
+      cs = std::max(mblen(&s[bp], blen-bp), 1);
    
    return len;
 }

@@ -14,10 +14,10 @@
 // Includes
 //***************************************************************************
 
-#include <vdr/plugin.h>
-
 #include <common.h>
 #include <scraper2vdr.h>
+
+#include <vdr/plugin.h>
 
 //***************************************************************************
 // Get Scraper Plugin
@@ -73,7 +73,7 @@ int getScraperMediaPath(const cEventCopy* event, const cRecording* recording,
       
       if (!schedules ||
           !(s = (cSchedule*)schedules->GetSchedule(event->ChannelID())) ||
-          !(evt = s->GetEvent(event->EventID())))
+          !(evt = s->GetEventById(event->EventID())))
       {
          tell(0, "Error, can't get lock on schedules or cant find event, aborting!");
          return fail;

@@ -28,6 +28,7 @@
 
 #include <jpeglib.h>
 
+//#include "Imlib2.h"
 #include "imlibrenderer.h"
 #include "theme.h"
 #include "common.h"

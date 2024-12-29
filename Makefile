@@ -16,7 +16,7 @@ FFMDIR = /usr/include
 #WITH_TOUCH = 1
 
 # like the X renderer to display directly on local xorg (grpahtft-fe not needed) 
-WITH_X = 1
+#WITH_X = 1
 
 # compile the graphtft-fe an the therefor tcp communication
 WITH_TCPCOM = 1
@@ -112,7 +112,7 @@ endif
 DEFINES += -D__STL_CONFIG_H
 
 LIBS += $(shell pkg-config libexif --libs 2>/dev/null)
-LIBS += $(shell imlib2-config --libs)
+LIBS += $(shell pkg-config imlib2 --libs 2>/dev/null)
 LIBS += $(shell pkg-config libgtop-2.0 --libs 2>/dev/null)
 
 ifdef WITH_TCPCOM

@@ -4,7 +4,7 @@
  *  theme.h - A plugin for the Video Disk Recorder
  *
  *  (c) 2004 Lars Tegeler, Sascha Volkenandt
- *  (c) 2006-2013 Jörg Wendel
+ *  (c) 2006-2013 Jï¿½rg Wendel
  *
  * This code is distributed under the terms and conditions of the
  * GNU GENERAL PUBLIC LICENSE. See the file COPYING for details.
@@ -20,12 +20,12 @@
 #include <vector>
 #include <stack>
 
-#include <vdr/tools.h>
-#include <vdr/config.h>
-
 #include <common.h>
 #include <renderer.h>
 #include <string>
+
+#include <vdr/tools.h>
+#include <vdr/config.h>
 
 #define SECONDS(x) (((uint64_t)x)*1000)
 
@@ -228,7 +228,90 @@ typedef cThemeService Ts;
 class cThemeItem : public cListObject, public cThemeService, public VariableProvider
 {  
    public:
+      cThemeItem& operator= (const cThemeItem &themeItem) {
+         currentSection = themeItem.currentSection;
+         lineBuffer = themeItem.lineBuffer;
+         condition = themeItem.condition;
+         _item = themeItem._item;
+         _id = themeItem._id;
+         _debug = themeItem._debug;
+         _sectionInclude = themeItem._sectionInclude;
+         _area = themeItem._area;
+         _x = themeItem._x;
+         _y = themeItem._y;
+         _width = themeItem._width;
+         _height = themeItem._height;
+         _start_line = themeItem._start_line;
+         _overlay = themeItem._overlay;
+         _lines = themeItem._lines;
+         _line = themeItem._line;
+         _size = themeItem._size;
+         _switch = themeItem._switch;
+         _menu_x = themeItem._menu_x;
+         _menu_y = themeItem._menu_y;
+         _menu_width = themeItem._menu_width;
+         _menu_height = themeItem._menu_height;
+         _bg_x = themeItem._bg_x;
+         _bg_y = themeItem._bg_y;
+         _bg_width = themeItem._bg_width;
+         _bg_height = themeItem._bg_height;
+         _stat_pic = themeItem._stat_pic;
+         _stat_x = themeItem._stat_x;
+         _stat_y = themeItem._stat_y;
+         _image_map = themeItem._image_map;
+         _stat_pic = themeItem._stat_pic;
+         _stat_x = themeItem._stat_x;
+         _stat_y = themeItem._stat_y;
+         _image_map = themeItem._image_map;
+         _stat_text = themeItem._stat_text;
+         _stat_width = themeItem._stat_width;
+         _stat_height = themeItem._stat_height;
+         _align = themeItem._align;
+         _align_v = themeItem._align_v;
+         _count = themeItem._count;
+         _number = themeItem._number;
+         _index = themeItem._index;
+         _spacing = themeItem._spacing;
+         _yspacing = themeItem._yspacing;
+         _bar_height = themeItem._bar_height;
+         _bar_height_unit = themeItem._bar_height_unit;
+         _scroll = themeItem._scroll;
+         _scroll_count = themeItem._scroll_count;
+         _dots = themeItem._dots;
+         _permanent = themeItem._permanent;
+         _factor = themeItem._factor;
+         _aspect_ratio = themeItem._aspect_ratio;
+         _fit = themeItem._fit;
+         _foreground = themeItem._foreground;
+         _rotate = themeItem._rotate;
+         _whipe_res = themeItem._whipe_res;
+         _delay = themeItem._delay;                      // delay in ms
+         _color = themeItem._color;
+         _bg_color = themeItem._bg_color;
+         _value = themeItem._value;
+         _total = themeItem._total;
+         _unit= themeItem._unit;
+         _reference= themeItem._reference;
+         _onClick= themeItem._onClick;
+         _onDblClick= themeItem._onDblClick;
+         _onUp= themeItem._onUp;
+         _onDown= themeItem._onDown;
+         _font= themeItem._font;
+         _path= themeItem._path;
+         _focus = themeItem._focus;
+         _path2 = themeItem._path2;
+         _type = themeItem._type;
+         _format = themeItem._format;
+         _text = themeItem._text;
+         _condition = themeItem._condition;
 
+         pathCount = themeItem.pathCount;
+         for (int i=0; i < maxPathCount; i++) {
+            pathList[i] = themeItem.pathList[i];
+         }
+         section = themeItem.section;
+         return *this;
+      }
       struct cPath
       {
          string configured;  // configured path
@@ -240,7 +323,7 @@ class cThemeItem : public cListObject, public cThemeService, public VariableProv
          int curNum;
          string last;        // last path
       };
-      
+
       cThemeItem();
       virtual ~cThemeItem();
       
@@ -501,7 +584,7 @@ class cDisplayItem : public cThemeItem
          
             free(buffer);
 
-            return max(min, res);
+            return std::max(min, res);
          }
 
          free(buffer);
@@ -999,7 +1082,10 @@ class cDisplayItems : public cList<cDisplayItem>
 class cThemeSection : public cListObject, cThemeService
 {
    public:
-
+      cThemeSection& operator= (const cThemeSection &ThemeSection)
+	  {
+		return *this;
+	  };
       cThemeSection(string aName = "unnamed")       { name = aName; defaultsItem = 0; }
       ~cThemeSection()                              { if (defaultsItem) delete defaultsItem; }
 

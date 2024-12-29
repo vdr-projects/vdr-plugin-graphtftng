@@ -163,7 +163,7 @@ void ComThread::Action()
       for (unsigned int i = 0; i < clients.size(); i++)
       {
          FD_SET(clients[i].channel->getHandle(), &readSet);
-         maxFD = max(maxFD, clients[i].channel->getHandle());
+         maxFD = std::max(maxFD, clients[i].channel->getHandle());
       }
 
       _mutex.Unlock();

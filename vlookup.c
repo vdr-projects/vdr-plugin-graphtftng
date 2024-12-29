@@ -35,7 +35,7 @@ eTimerMatch Matches(const cTimer* ti, const cEventCopy* Event)
          else if (ti->StopTime() <= Event->StartTime() || Event->EndTime() <= ti->StartTime())
             overlap = 0;
          else
-            overlap = (min(ti->StopTime(), Event->EndTime()) - max(ti->StartTime(), Event->StartTime())) * FULLMATCH / max(Event->Duration(), 1);
+            overlap = (std::min(ti->StopTime(), Event->EndTime()) - std::max(ti->StartTime(), Event->StartTime())) * FULLMATCH / std::max(Event->Duration(), 1);
       }
       
       if (UseVps)
@@ -201,8 +201,11 @@ const char* cDisplayItem::variable(const char* name, const char* fmt, int& statu
       const cRecording* recording = 0;
 
 #if defined (APIVERSNUM) && (APIVERSNUM >= 20301)
-      cRecordingsLock recordingsLock(false);
-      const cRecordings* recordings = recordingsLock.Recordings();
+      const cRecordings* recordings;
+      {
+      LOCK_RECORDINGS_READ;
+      recordings = Recordings;
+      }
 #else
       cRecordings* recordings = &Recordings;
 #endif
@@ -338,8 +341,11 @@ const char* cDisplayItem::variable(const char* name, const char* fmt, int& statu
       const cChannel* channel = 0;
 
 #if defined (APIVERSNUM) && (APIVERSNUM >= 20301)
-      cChannelsLock channelsLock(false);
-      const cChannels* channels = channelsLock.Channels();
+      const cChannels* channels;
+      {
+      LOCK_CHANNELS_READ;
+      channels = Channels;
+      }
 #else
       cChannels* channels = &Channels;
 #endif
@@ -472,8 +478,11 @@ const char* cDisplayItem::variable(const char* name, const char* fmt, int& statu
       // get timers lock
       
 #if defined (APIVERSNUM) && (APIVERSNUM >= 20301)
-      cTimersLock timersLock(false);
-      const cTimers* timers = timersLock.Timers();
+      const cTimers* timers;
+         {
+         LOCK_TIMERS_READ;
+         timers = Timers;
+         }
 #else
       cTimers* timers = &Timers;
 #endif

@@ -162,7 +162,7 @@ int VariableProvider::evaluate(string& buf, const char* var)
       // found expression
 
       e--;
-      len = min((int)(e-s), 1000);
+      len = std::min((int)(e-s), 1000);
 
       if (len < 1)
       {

@@ -11,13 +11,14 @@
  *
  **/
 
-#include <vdr/config.h>
 #include <theme.h>
 #include <getopt.h>
 
 #include <service.h>
 #include <graphtftng.h>
 #include <span.h>
+
+#include <vdr/config.h>
 
 //***************************************************************************
 // cGraphTFTMenu
@@ -266,6 +267,7 @@ bool cPluginGraphTFT::Start()
    if (display->init(device, port, startDetached) != success)
    {
       tell(0, "Error: Initializing failed, aborting!");
+      dsyslog ("GraphTFTNG: Initializing failed, aborting!");
 
       return 0;
    }

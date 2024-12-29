@@ -14,13 +14,12 @@
 #ifndef __GTFT_IMLIBRENDERER_HPP
 #define __GTFT_IMLIBRENDERER_HPP
 
+#include <Imlib2.h>
 #include "renderer.h"
 
 #ifndef WITH_X
 #  define X_DISPLAY_MISSING
 #endif
-
-#include <Imlib2.h>
 
 #undef Status
 
