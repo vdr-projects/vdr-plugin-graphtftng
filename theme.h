@@ -4,7 +4,7 @@
  *  theme.h - A plugin for the Video Disk Recorder
  *
  *  (c) 2004 Lars Tegeler, Sascha Volkenandt
- *  (c) 2006-2013 J�rg Wendel
+ *  (c) 2006-2013 Jörg Wendel
  *
  * This code is distributed under the terms and conditions of the
  * GNU GENERAL PUBLIC LICENSE. See the file COPYING for details.

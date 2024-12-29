@@ -4,7 +4,7 @@
 // Date 31.10.06
 // This code is distributed under the terms and conditions of the
 // GNU GENERAL PUBLIC LICENSE. See the file COPYING for details.
-// (c) 2006-2008 Jörg Wendel
+// (c) 2006-2008 JÃ¶rg Wendel
 //--------------------------------------------------------------------------
 // Class Renderer
 //***************************************************************************

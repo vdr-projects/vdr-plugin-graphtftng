@@ -2,7 +2,7 @@
  * scan.h: A plugin for the Video Disk Recorder
  *
  * See the README file for copyright information and how to reach the author.
- *  (c) 2007-2013 Jörg Wendel
+ *  (c) 2007-2013 JÃ¶rg Wendel
  *
  * This code is distributed under the terms and conditions of the
  * GNU GENERAL PUBLIC LICENSE. See the file COPYING for details.

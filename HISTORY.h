@@ -6,8 +6,8 @@
  *
  */
 
-#define _VERSION      "0.6.16"
-#define VERSION_DATE  "13.02.2017"
+#define _VERSION      "0.6.17"
+#define VERSION_DATE  "29.12.2024"
 #define THEMEVERSION  "0.4.1"
 
 #ifdef GIT_REV
@@ -18,6 +18,9 @@
 
 /*
  * ------------------------------------
+
+#110 Version 0.6.17, kamel5 29.12.2024
+     - change: support current VDR versions (2.7.3), see https://www.vdr-portal.de/forum/index.php?thread/136500-graphtftng-fehler-beim-compile-mit-vdr-2-7-3/
 
 #109 Version 0.6.16, horchi 13.02.2017
      - change: porting to newer libavutil and g++ 6.2

@@ -2,7 +2,7 @@
  * touchthread.h: A plugin for the Video Disk Recorder
  *
  * See the README file for copyright information and how to reach the author.
- *  (c) 2007-2008 Jörg Wendel
+ *  (c) 2007-2008 JÃ¶rg Wendel
  *
  * Date: 14.11.2008
  *
