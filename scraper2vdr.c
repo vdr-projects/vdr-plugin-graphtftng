@@ -82,21 +82,22 @@ int getScraperMediaPath(const cEventCopy* event, const cRecording* recording,
       call.event = evt;
    }
 
-   if (pScraper->Service("GetPosterBannerV2", &call)) 
+   if (pScraper->Service("GetPosterBannerV2", &call))
    {
-      if (call.type == tSeries && call.banner.path.size() > 0) 
+      if (call.type == tSeries && call.banner.path.size() > 0)
+      {
+         bannerPath = call.banner.path;
+      }
+      if (call.type == tSeries)
       {
          ScraperGetPoster callPoster;
-
-         bannerPath = call.banner.path;
-
          callPoster.event = evt;                     // only one is set
          callPoster.recording = recording;           //  "    "   "  "
 
-         if (pScraper->Service("GetPoster", &callPoster)) 
+         if (pScraper->Service("GetPoster", &callPoster))
             posterPath = callPoster.poster.path;
-      } 
-      else if (call.type == tMovie && call.poster.path.size() > 0 && call.poster.height > 0) 
+      }
+      if (call.type == tMovie && call.poster.path.size() > 0 && call.poster.height > 0) 
       {
          posterPath = call.poster.path;
       } 
